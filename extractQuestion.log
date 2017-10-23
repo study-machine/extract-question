@@ -1,0 +1,42 @@
+171023 14:38:17 main.py[line:16] DEBUG 获取所有版本
+171023 14:38:17 main.py[line:18] DEBUG [<id:1,name:人教版>, <id:75,name:北师大版>, <id:79,name:北京课改版>, <id:87,name:景山版>, <id:88,name:青岛版六三制>, <id:96,name:浙教版>, <id:100,name:苏教版>, <id:115,name:沪教版>, <id:124,name:西师大版>, <id:135,name:冀教版>, <id:137,name:沪教版（试用本）>, <id:147,name:青岛版五四制>, <id:151,name:拓展提高>, <id:10447,name:多学科flag>, <id:10448,name:PEP>, <id:10449,name:人教新版（部编版）>, <id:10450,name:苏教版（新版）>, <id:10451,name:北京版>, <id:10452,name:北京版（新版）>, <id:10453,name:北师大版（新版）>, <id:10454,name:语文S版>, <id:10455,name:新起点>, <id:10456,name:语文S版（新版）>, <id:10457,name:语文A版>, <id:10458,name:精通版>, <id:10461,name:教科版>, <id:10467,name:布克学堂《小象数学》>, <id:10469,name:牛津英语深圳版>, <id:10470,name:沪教牛津上海试用版>, <id:10473,name:外研社新标准（一起点）>, <id:10474,name:外研社新标准（三起点）>, <id:10477,name:陕旅版（三起点）>, <id:10478,name:北京版（一起点）>, <id:10479,name:辽师大（三起点）>, <id:10480,name:北师大（三起点）>, <id:10481,name:北师大（一起点）>, <id:10486,name:鲁教版>, <id:10487,name:长春版>, <id:10488,name:湘教版>]
+171023 14:38:17 main.py[line:20] DEBUG 开始获取版本：人教版的教材
+171023 14:38:17 main.py[line:25] DEBUG 开始获取教材：人教版的课程
+171023 14:38:17 main.py[line:28] DEBUG [<id:15628,grade:1>, <id:15629,grade:2>, <id:15630,grade:3>, <id:15631,grade:4>, <id:15632,grade:5>, <id:15633,grade:6>]
+171023 14:38:17 main.py[line:40] DEBUG 开始获取教材id：15628的课程
+171023 14:38:17 main.py[line:43] DEBUG 3．小小竹排画中游，获取到课程
+171023 14:38:17 main.py[line:52] DEBUG 3．小小竹排画中游 has 字词练习
+171023 14:38:17 main.py[line:60] DEBUG 3．小小竹排画中游,开始抽取汉字问题
+171023 14:38:17 main.py[line:73] DEBUG 获取到汉字：口
+171023 14:38:17 main.py[line:80] DEBUG 口 增加字音题<id:910291,body:#{"type":"para_begin","style":"chinese_text"}#“口”字的正确读音是#{"type":"para_end"}#,q_type:字音>
+171023 14:38:17 main.py[line:87] DEBUG 口 增加字形题<id:918642,body:#{"type":"para_begin","style":"chinese_text"}#下列选项中有错别字的是#{"type":"para_end"}#,q_type:字形>
+171023 14:38:17 main.py[line:94] DEBUG 口 增加字义题 <id:953672,body:#{"type":"para_begin","style":"chinese_text"}#【破裂的地方：】下列选项词语中的（口）字与上面的释义相符合的是#{"type":"para_end"}#,q_type:字义>
+171023 14:38:17 main.py[line:154] DEBUG 添加备选题<id:953670,body:#{"type":"para_begin","style":"chinese_text"}#【人或动物进饮食和发声器官的一部分，俗称嘴：】下列选项词语中的（口）字与上面的释义相符合的是#{"type":"para_end"}#,q_type:字义>
+171023 14:38:17 main.py[line:154] DEBUG 添加备选题<id:946062,body:#{"type":"para_begin","style":"chinese_text"}#漱（口）——给括号中的字选择正确的解释#{"type":"para_end"}#,q_type:字义>
+171023 14:38:17 main.py[line:154] DEBUG 添加备选题<id:918643,body:#{"type":"para_begin","style":"chinese_text"}#下列选项中有错别字的是#{"type":"para_end"}#,q_type:字形>
+171023 14:38:17 main.py[line:154] DEBUG 添加备选题<id:946060,body:#{"type":"para_begin","style":"chinese_text"}#闭（口）——给括号中的字选择正确的解释#{"type":"para_end"}#,q_type:字义>
+171023 14:38:17 main.py[line:154] DEBUG 添加备选题<id:946067,body:#{"type":"para_begin","style":"chinese_text"}#门（口）——给括号中的字选择正确的解释#{"type":"para_end"}#,q_type:字义>
+171023 14:38:17 main.py[line:40] DEBUG 开始获取教材id：15629的课程
+171023 14:38:17 main.py[line:43] DEBUG 14．我要的是葫芦，获取到课程
+171023 14:38:17 main.py[line:52] DEBUG 14．我要的是葫芦 has 字词练习
+171023 14:38:17 main.py[line:60] DEBUG 14．我要的是葫芦,开始抽取汉字问题
+171023 14:38:17 main.py[line:73] DEBUG 获取到汉字：言
+171023 14:38:17 main.py[line:80] DEBUG 言 增加字音题<id:913576,body:#{"type":"para_begin","style":"chinese_text"}#“言”字的正确读音是#{"type":"para_end"}#,q_type:字音>
+171023 14:38:17 main.py[line:87] DEBUG 言 增加字形题<id:916640,body:#{"type":"para_begin","style":"chinese_text"}#下列选项中有错别字的是#{"type":"para_end"}#,q_type:字形>
+171023 14:38:17 main.py[line:94] DEBUG 言 增加字义题 <id:958991,body:#{"type":"para_begin","style":"chinese_text"}#下列词语中的（言）与（五言）中的（言）意思相同的一项是#{"type":"para_end"}#,q_type:字义>
+171023 14:38:17 main.py[line:154] DEBUG 添加备选题<id:951532,body:#{"type":"para_begin","style":"chinese_text"}#格（言）——给括号中的字选择正确的解释#{"type":"para_end"}#,q_type:字义>
+171023 14:38:17 main.py[line:154] DEBUG 添加备选题<id:956105,body:#{"type":"para_begin","style":"chinese_text"}#【字：】下列选项词语中的（言）字与上面的释义相符合的是#{"type":"para_end"}#,q_type:字义>
+171023 14:38:17 main.py[line:154] DEBUG 添加备选题<id:951540,body:#{"type":"para_begin","style":"chinese_text"}#万（言）书——给括号中的字选择正确的解释#{"type":"para_end"}#,q_type:字义>
+171023 14:38:17 main.py[line:154] DEBUG 添加备选题<id:951535,body:#{"type":"para_begin","style":"chinese_text"}#诺（言）——给括号中的字选择正确的解释#{"type":"para_end"}#,q_type:字义>
+171023 14:38:17 main.py[line:154] DEBUG 添加备选题<id:958992,body:#{"type":"para_begin","style":"chinese_text"}#下列词语中的（言）与（畅所欲言）中的（言）意思相同的一项是#{"type":"para_end"}#,q_type:字义>
+171023 14:38:17 main.py[line:52] DEBUG 14．我要的是葫芦 has 词汇
+171023 14:38:17 main.py[line:63] DEBUG 14．我要的是葫芦,开始抽取的词语问题
+171023 14:38:17 main.py[line:121] DEBUG 获取到词语：棵
+171023 14:38:17 main.py[line:121] DEBUG 获取到词语：雪白
+171023 14:38:17 main.py[line:127] DEBUG 雪白 增加近义词题 <id:2036836,body:#{"type":"para_begin","style":"chinese_text"}#以下哪个不是（雪白）的近义词（）#{"type":"para_end"}#,q_type:近义词>
+171023 14:38:17 main.py[line:133] DEBUG 雪白 增加反义词题 <id:2040699,body:#{"type":"para_begin","style":"chinese_text"}#以下哪个不是（雪白）的反义词（）#{"type":"para_end"}#,q_type:反义词>
+171023 14:38:17 main.py[line:154] DEBUG 添加备选题<id:2036836,body:#{"type":"para_begin","style":"chinese_text"}#以下哪个不是（雪白）的近义词（）#{"type":"para_end"}#,q_type:近义词>
+171023 14:38:17 main.py[line:154] DEBUG 添加备选题<id:2034244,body:#{"type":"para_begin","style":"chinese_text"}#（雪白）的近义词是（）#{"type":"para_end"}#,q_type:近义词>
+171023 14:38:17 main.py[line:154] DEBUG 添加备选题<id:2044699,body:#{"type":"para_begin","style":"chinese_text"}#（雪白）的近义词是（）#{"type":"para_end"}#,q_type:近义词>
+171023 14:38:17 main.py[line:154] DEBUG 添加备选题<id:2047192,body:#{"type":"para_begin","style":"chinese_text"}#以下哪个不是（雪白）的近义词（）#{"type":"para_end"}#,q_type:近义词>
+171023 14:38:17 main.py[line:154] DEBUG 添加备选题<id:2049012,body:#{"type":"para_begin","style":"chinese_text"}#以下哪个不是（雪白）的反义词（）#{"type":"para_end"}#,q_type:反义词>
