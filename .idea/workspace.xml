@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9d8f55a4-cfa1-4938-93ac-74b4b54672f4" name="Default" comment="" />
+    <list default="true" id="9d8f55a4-cfa1-4938-93ac-74b4b54672f4" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/model/__init__.py" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/category.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/new_model.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/questionType 题目类型（0 填空 1 单选）其他类型要问" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test_main.py" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/little_orm.py" afterPath="$PROJECT_DIR$/model/base_model.py" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/tiku_model.py" afterPath="$PROJECT_DIR$/model/tiku_model.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/extractQuestion.log" afterPath="$PROJECT_DIR$/extractQuestion.log" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.py" afterPath="$PROJECT_DIR$/main.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/utils.py" afterPath="$PROJECT_DIR$/utils.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/需求" afterPath="$PROJECT_DIR$/需求" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -11,52 +24,74 @@
   </component>
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/extract_questions$test_main.coverage" NAME="test_main Coverage Results" MODIFIED="1508725915703" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/extract_questions$main.coverage" NAME="main Coverage Results" MODIFIED="1508726381992" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/extract_questions$main.coverage" NAME="main Coverage Results" MODIFIED="1508758996988" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="test_main.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test_main.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="316">
-              <caret line="15" column="39" lean-forward="false" selection-start-line="15" selection-start-column="39" selection-end-line="15" selection-end-column="39" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="337">
-              <caret line="44" column="0" lean-forward="true" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="questionType 题目类型（0 填空 1 单选）其他类型要问" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/questionType 题目类型（0 填空 1 单选）其他类型要问">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="tiku_model.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tiku_model.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-164">
-              <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+            <state relative-caret-position="-2041">
+              <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
               <folding>
-                <marker date="1508726254000" expanded="true" signature="585:636" ph="SELECT Teach... wx_edu_teachingmaterial" />
-                <marker date="1508726254000" expanded="true" signature="1345:1452" ph="SELECT JiaoC... wx_edu_jiaocai" />
-                <marker date="1508726254000" expanded="true" signature="2189:2300" ph="SELECT Cours... wx_edu_coursesection" />
-                <marker date="1508726254000" expanded="true" signature="2837:2962" ph="SELECT Cours... wx_edu_coursesection" />
-                <marker date="1508726254000" expanded="true" signature="3785:4154" ph="SELECT item.... edu_relate_coursesectioncategory" />
-                <marker date="1508726254000" expanded="true" signature="4869:5233" ph="SELECT q.Que... edu_relate_questioncategory" />
+                <element signature="e#14#44#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="utils.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/utils.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="220">
+              <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="需求" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/需求">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="351">
+              <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="extractQuestion.log" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/extractQuestion.log">
+          <provider selected="true" editor-type-id="LogFileEditorProvider">
+            <state relative-caret-position="10342">
+              <caret line="1121" column="104" lean-forward="false" selection-start-line="1121" selection-start-column="104" selection-end-line="1121" selection-end-column="104" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="base_model.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/model/base_model.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="440">
+              <caret line="20" column="14" lean-forward="false" selection-start-line="20" selection-start-column="14" selection-end-line="20" selection-end-column="14" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="tiku_model.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/model/tiku_model.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="339">
+              <caret line="206" column="17" lean-forward="true" selection-start-line="206" selection-start-column="17" selection-end-line="206" selection-end-column="17" />
+              <folding>
+                <element signature="e#14#33#0" expanded="true" />
+                <marker date="1508837800000" expanded="true" signature="841:892" ph="SELECT Teach... wx_edu_teachingmaterial" />
+                <marker date="1508837800000" expanded="true" signature="1576:1683" ph="SELECT JiaoC... wx_edu_jiaocai" />
+                <marker date="1508837800000" expanded="true" signature="2505:2616" ph="SELECT Cours... wx_edu_coursesection" />
+                <marker date="1508837800000" expanded="true" signature="2944:3069" ph="SELECT Cours... wx_edu_coursesection" />
+                <marker date="1508837800000" expanded="true" signature="3835:4213" ph="SELECT DISTI... edu_relate_coursesectioncategory" />
+                <marker date="1508837800000" expanded="true" signature="4983:5353" ph="SELECT q.Que... edu_relate_questioncategory" />
               </folding>
             </state>
           </provider>
@@ -64,13 +99,29 @@
       </file>
     </leaf>
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/base_model.py" />
         <option value="$PROJECT_DIR$/test_main.py" />
         <option value="$PROJECT_DIR$/tiku_model.py" />
+        <option value="$PROJECT_DIR$/little_orm.py" />
+        <option value="$PROJECT_DIR$/category.py" />
+        <option value="$PROJECT_DIR$/utils.py" />
         <option value="$PROJECT_DIR$/main.py" />
+        <option value="$PROJECT_DIR$/extractQuestion.log" />
+        <option value="$PROJECT_DIR$/model/base_model.py" />
+        <option value="$PROJECT_DIR$/model/tiku_model.py" />
       </list>
     </option>
   </component>
@@ -81,6 +132,7 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
+    <option name="x" value="15" />
     <option name="y" value="23" />
     <option name="width" value="1440" />
     <option name="height" value="809" />
@@ -100,7 +152,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -112,13 +164,18 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$USER_HOME$/.virtualenvs/common_work/bin/python" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/model" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -194,18 +251,17 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="809" extended-state="0" />
+    <frame x="15" y="23" width="1440" height="809" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19164266" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.16570605" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295129" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25432277" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22766571" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21346705" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39971346" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -214,7 +270,8 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295129" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -226,19 +283,30 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/tiku_model.py</url>
-          <line>56</line>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-      </breakpoints>
-      <option name="time" value="10" />
+      <option name="time" value="21" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/test_main.py">
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="66">
+          <caret line="4" column="0" lean-forward="true" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+          <folding>
+            <element signature="e#14#44#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/需求">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -246,57 +314,43 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tiku_model.py">
+    <entry file="file://$PROJECT_DIR$/model/base_model.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2016">
-          <caret line="85" column="10" lean-forward="false" selection-start-line="85" selection-start-column="10" selection-end-line="85" selection-end-column="10" />
-          <folding>
-            <marker date="1508726254000" expanded="true" signature="585:636" ph="SELECT Teach... wx_edu_teachingmaterial" />
-            <marker date="1508726254000" expanded="true" signature="1345:1452" ph="SELECT JiaoC... wx_edu_jiaocai" />
-            <marker date="1508726254000" expanded="true" signature="2189:2300" ph="SELECT Cours... wx_edu_coursesection" />
-            <marker date="1508726254000" expanded="true" signature="2837:2962" ph="SELECT Cours... wx_edu_coursesection" />
-            <marker date="1508726254000" expanded="true" signature="3785:4154" ph="SELECT item.... edu_relate_coursesectioncategory" />
-            <marker date="1508726254000" expanded="true" signature="4869:5233" ph="SELECT q.Que... edu_relate_questioncategory" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test_main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="462">
+          <caret line="21" column="27" lean-forward="false" selection-start-line="21" selection-start-column="27" selection-end-line="21" selection-end-column="27" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tiku_model.py">
+    <entry file="file://$PROJECT_DIR$/model/tiku_model.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1248">
-          <caret line="52" column="0" lean-forward="true" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
+        <state relative-caret-position="242">
+          <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
           <folding>
-            <marker date="1508726254000" expanded="true" signature="585:636" ph="SELECT Teach... wx_edu_teachingmaterial" />
-            <marker date="1508726254000" expanded="true" signature="1345:1452" ph="SELECT JiaoC... wx_edu_jiaocai" />
-            <marker date="1508726254000" expanded="true" signature="2189:2300" ph="SELECT Cours... wx_edu_coursesection" />
-            <marker date="1508726254000" expanded="true" signature="2837:2962" ph="SELECT Cours... wx_edu_coursesection" />
-            <marker date="1508726254000" expanded="true" signature="3785:4154" ph="SELECT item.... edu_relate_coursesectioncategory" />
-            <marker date="1508726254000" expanded="true" signature="4869:5233" ph="SELECT q.Que... edu_relate_questioncategory" />
+            <element signature="e#14#33#0" expanded="true" />
+            <marker date="1508837800000" expanded="true" signature="841:892" ph="SELECT Teach... wx_edu_teachingmaterial" />
+            <marker date="1508837800000" expanded="true" signature="1576:1683" ph="SELECT JiaoC... wx_edu_jiaocai" />
+            <marker date="1508837800000" expanded="true" signature="2505:2616" ph="SELECT Cours... wx_edu_coursesection" />
+            <marker date="1508837800000" expanded="true" signature="2944:3069" ph="SELECT Cours... wx_edu_coursesection" />
+            <marker date="1508837800000" expanded="true" signature="3835:4213" ph="SELECT DISTI... edu_relate_coursesectioncategory" />
+            <marker date="1508837800000" expanded="true" signature="4983:5353" ph="SELECT q.Que... edu_relate_questioncategory" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/base_model.py" />
-    <entry file="file://$PROJECT_DIR$/base_model.py" />
-    <entry file="file://$PROJECT_DIR$/tiku_model.py">
+    <entry file="file://$PROJECT_DIR$/extractQuestion.log">
+      <provider selected="true" editor-type-id="LogFileEditorProvider">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-164">
-          <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1508726254000" expanded="true" signature="585:636" ph="SELECT Teach... wx_edu_teachingmaterial" />
-            <marker date="1508726254000" expanded="true" signature="1345:1452" ph="SELECT JiaoC... wx_edu_jiaocai" />
-            <marker date="1508726254000" expanded="true" signature="2189:2300" ph="SELECT Cours... wx_edu_coursesection" />
-            <marker date="1508726254000" expanded="true" signature="2837:2962" ph="SELECT Cours... wx_edu_coursesection" />
-            <marker date="1508726254000" expanded="true" signature="3785:4154" ph="SELECT item.... edu_relate_coursesectioncategory" />
-            <marker date="1508726254000" expanded="true" signature="4869:5233" ph="SELECT q.Que... edu_relate_questioncategory" />
+            <element signature="e#14#44#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -309,27 +363,202 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/questionType 题目类型（0 填空 1 单选）其他类型要问">
+    <entry file="file://$PROJECT_DIR$/questionType 题目类型（0 填空 1 单选）其他类型要问" />
+    <entry file="file://$PROJECT_DIR$/model/tiku_model.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="1188">
+          <caret line="56" column="0" lean-forward="false" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
+          <folding>
+            <element signature="e#14#33#0" expanded="true" />
+            <marker date="1508837800000" expanded="true" signature="841:892" ph="SELECT Teach... wx_edu_teachingmaterial" />
+            <marker date="1508837800000" expanded="true" signature="1576:1683" ph="SELECT JiaoC... wx_edu_jiaocai" />
+            <marker date="1508837800000" expanded="true" signature="2505:2616" ph="SELECT Cours... wx_edu_coursesection" />
+            <marker date="1508837800000" expanded="true" signature="2944:3069" ph="SELECT Cours... wx_edu_coursesection" />
+            <marker date="1508837800000" expanded="true" signature="3835:4213" ph="SELECT DISTI... edu_relate_coursesectioncategory" />
+            <marker date="1508837800000" expanded="true" signature="4983:5353" ph="SELECT q.Que... edu_relate_questioncategory" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_main.py" />
+    <entry file="file://$PROJECT_DIR$/questionType 题目类型（0 填空 1 单选）其他类型要问" />
+    <entry file="file://$PROJECT_DIR$/model/tiku_model.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+          <folding>
+            <element signature="e#14#33#0" expanded="true" />
+            <marker date="1508837800000" expanded="true" signature="841:892" ph="SELECT Teach... wx_edu_teachingmaterial" />
+            <marker date="1508837800000" expanded="true" signature="1576:1683" ph="SELECT JiaoC... wx_edu_jiaocai" />
+            <marker date="1508837800000" expanded="true" signature="2505:2616" ph="SELECT Cours... wx_edu_coursesection" />
+            <marker date="1508837800000" expanded="true" signature="2944:3069" ph="SELECT Cours... wx_edu_coursesection" />
+            <marker date="1508837800000" expanded="true" signature="3835:4213" ph="SELECT DISTI... edu_relate_coursesectioncategory" />
+            <marker date="1508837800000" expanded="true" signature="4983:5353" ph="SELECT q.Que... edu_relate_questioncategory" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3528">
+          <caret line="150" column="15" lean-forward="false" selection-start-line="150" selection-start-column="15" selection-end-line="150" selection-end-column="15" />
+          <folding>
+            <element signature="e#14#44#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_main.py" />
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1008">
+          <caret line="44" column="0" lean-forward="true" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
+          <folding>
+            <element signature="e#14#44#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/questionType 题目类型（0 填空 1 单选）其他类型要问" />
+    <entry file="file://$PROJECT_DIR$/model/tiku_model.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+          <folding>
+            <element signature="e#14#33#0" expanded="true" />
+            <marker date="1508837800000" expanded="true" signature="841:892" ph="SELECT Teach... wx_edu_teachingmaterial" />
+            <marker date="1508837800000" expanded="true" signature="1576:1683" ph="SELECT JiaoC... wx_edu_jiaocai" />
+            <marker date="1508837800000" expanded="true" signature="2505:2616" ph="SELECT Cours... wx_edu_coursesection" />
+            <marker date="1508837800000" expanded="true" signature="2944:3069" ph="SELECT Cours... wx_edu_coursesection" />
+            <marker date="1508837800000" expanded="true" signature="3835:4213" ph="SELECT DISTI... edu_relate_coursesectioncategory" />
+            <marker date="1508837800000" expanded="true" signature="4983:5353" ph="SELECT q.Que... edu_relate_questioncategory" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_main.py" />
+    <entry file="file://$PROJECT_DIR$/model/tiku_model.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2016">
+          <caret line="85" column="10" lean-forward="false" selection-start-line="85" selection-start-column="10" selection-end-line="85" selection-end-column="10" />
+          <folding>
+            <element signature="e#14#33#0" expanded="true" />
+            <marker date="1508837800000" expanded="true" signature="841:892" ph="SELECT Teach... wx_edu_teachingmaterial" />
+            <marker date="1508837800000" expanded="true" signature="1576:1683" ph="SELECT JiaoC... wx_edu_jiaocai" />
+            <marker date="1508837800000" expanded="true" signature="2505:2616" ph="SELECT Cours... wx_edu_coursesection" />
+            <marker date="1508837800000" expanded="true" signature="2944:3069" ph="SELECT Cours... wx_edu_coursesection" />
+            <marker date="1508837800000" expanded="true" signature="3835:4213" ph="SELECT DISTI... edu_relate_coursesectioncategory" />
+            <marker date="1508837800000" expanded="true" signature="4983:5353" ph="SELECT q.Que... edu_relate_questioncategory" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_main.py" />
+    <entry file="file://$PROJECT_DIR$/model/tiku_model.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1248">
+          <caret line="52" column="0" lean-forward="true" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
+          <folding>
+            <element signature="e#14#33#0" expanded="true" />
+            <marker date="1508837800000" expanded="true" signature="841:892" ph="SELECT Teach... wx_edu_teachingmaterial" />
+            <marker date="1508837800000" expanded="true" signature="1576:1683" ph="SELECT JiaoC... wx_edu_jiaocai" />
+            <marker date="1508837800000" expanded="true" signature="2505:2616" ph="SELECT Cours... wx_edu_coursesection" />
+            <marker date="1508837800000" expanded="true" signature="2944:3069" ph="SELECT Cours... wx_edu_coursesection" />
+            <marker date="1508837800000" expanded="true" signature="3835:4213" ph="SELECT DISTI... edu_relate_coursesectioncategory" />
+            <marker date="1508837800000" expanded="true" signature="4983:5353" ph="SELECT q.Que... edu_relate_questioncategory" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/tiku_model.py" />
+    <entry file="file://$PROJECT_DIR$/model/tiku_model.py" />
+    <entry file="file://$PROJECT_DIR$/questionType 题目类型（0 填空 1 单选）其他类型要问" />
+    <entry file="file://$PROJECT_DIR$/test_main.py" />
+    <entry file="file://$PROJECT_DIR$/category.py" />
+    <entry file="file://$PROJECT_DIR$/需求">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="351">
+          <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test_main.py">
+    <entry file="file://$USER_HOME$/.virtualenvs/common_work/lib/python2.7/site-packages/pymysql/_socketio.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="316">
-          <caret line="15" column="39" lean-forward="false" selection-start-line="15" selection-start-column="39" selection-end-line="15" selection-end-column="39" />
+        <state relative-caret-position="223">
+          <caret line="58" column="0" lean-forward="false" selection-start-line="58" selection-start-column="0" selection-end-line="58" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.virtualenvs/common_work/lib/python2.7/site-packages/pymysql/connections.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="217">
+          <caret line="1020" column="0" lean-forward="false" selection-start-line="1020" selection-start-column="0" selection-end-line="1020" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tiku_model.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="181">
+          <caret line="60" column="7" lean-forward="true" selection-start-line="60" selection-start-column="7" selection-end-line="60" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="337">
-          <caret line="44" column="0" lean-forward="true" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
+        <state relative-caret-position="-2041">
+          <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <folding>
+            <element signature="e#14#44#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/extractQuestion.log">
+      <provider selected="true" editor-type-id="LogFileEditorProvider">
+        <state relative-caret-position="10342">
+          <caret line="1121" column="104" lean-forward="false" selection-start-line="1121" selection-start-column="104" selection-end-line="1121" selection-end-column="104" />
+        </state>
+      </provider>
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="359">
+          <caret line="44" column="27" lean-forward="false" selection-start-line="44" selection-start-column="27" selection-end-line="44" selection-end-column="27" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/base_model.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="440">
+          <caret line="20" column="14" lean-forward="false" selection-start-line="20" selection-start-column="14" selection-end-line="20" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/tiku_model.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="339">
+          <caret line="206" column="17" lean-forward="true" selection-start-line="206" selection-start-column="17" selection-end-line="206" selection-end-column="17" />
+          <folding>
+            <element signature="e#14#33#0" expanded="true" />
+            <marker date="1508837800000" expanded="true" signature="841:892" ph="SELECT Teach... wx_edu_teachingmaterial" />
+            <marker date="1508837800000" expanded="true" signature="1576:1683" ph="SELECT JiaoC... wx_edu_jiaocai" />
+            <marker date="1508837800000" expanded="true" signature="2505:2616" ph="SELECT Cours... wx_edu_coursesection" />
+            <marker date="1508837800000" expanded="true" signature="2944:3069" ph="SELECT Cours... wx_edu_coursesection" />
+            <marker date="1508837800000" expanded="true" signature="3835:4213" ph="SELECT DISTI... edu_relate_coursesectioncategory" />
+            <marker date="1508837800000" expanded="true" signature="4983:5353" ph="SELECT q.Que... edu_relate_questioncategory" />
+          </folding>
         </state>
       </provider>
     </entry>

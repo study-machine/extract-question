@@ -1,67 +1,88 @@
 # coding=utf8
-import logging
-from random import randint
-from tiku_model import *
-from category import *
-
-logging.basicConfig(
-    level=logging.DEBUG,
-    format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
-    datefmt='%y%m%d %H:%M:%S',
-    filename='extractQuestion.log',
-    filemode='w')
+from model.tiku_model import *
+from utils import *
 
 
 def get_all_versions():
-    logging.debug('获取所有版本')
+    log.info('获取所有版本')
     all_versions = JiaoCaiVersion.get_all_version()
-    logging.debug(all_versions)
-    for v in all_versions[:1]:
-        logging.debug('开始获取版本：%s的教材' % v.name)
+    log.info(all_versions)
+    for v in all_versions:
+        log.info('开始获取版本：%s的教材' % v.name)
         get_jiaocais(v)
 
 
 def get_jiaocais(version):
-    logging.debug('开始获取教材：%s的课程' % version.name)
+    log.info('开始获取教材：%s的课程' % version.name)
     version.get_jiaocai()
     jiaocais = version.jiaocais
-    logging.debug(jiaocais)
+    log.info(jiaocais)
     if not jiaocais:
-        logging.warning('版本:%s无可用教材' % version.name)
+        log.warning('版本:%s无可用教材' % version.name)
         return
-    for j in jiaocais[:2]:
+    for j in jiaocais[1:]:
         get_courses(j)
 
 
 def get_courses(jiaocai):
-    if not jiaocai:
-        logging.warning('该教材%s无可用课程' % jiaocai.name)
-        return
-    logging.debug('开始获取教材id：%s的课程' % jiaocai.id)
     courses = jiaocai.get_courses()
-    for c in courses[20:21]:
-        logging.debug('%s，获取到课程' % c.name)
+    if not courses:
+        log.warning('该教材%s无可用课程' % jiaocai.name)
+        return
+    log.info('开始获取教材id：%s的课程' % jiaocai.id)
+    for c in courses:
+        log.info('=' * 30)
+        log.info('课程《%s》' % c.name)
+        log.info('=' * 30)
         get_practice(c)
 
 
 def get_practice(course):
+    """获取字或词的练习"""
     course.get_practices()
-    item_type = ''
+
+    misson_group_order = 0
+
     for practice in course.childs:
         if practice.name == '字词练习' or practice.name == '词汇':
-            logging.debug('%s has %s' % (course.name, practice.name))
-            get_item(practice.id, practice.name, course)
+            log.info('%s has %s' % (course.name, practice.name))
+
+            # 找到确定添加的题
+            confirm_questions = get_item(practice.id, practice.name, course)
+            # 一个课程的汉字或词语题目数量
+            n = len(confirm_questions)
+            if n < 6:
+                log.error('课程%s的%s题目低于6道，无法组成关卡' % (course.name, practice.name))
+                continue
+            log.info('课程%s有%s题%d道' % (course.name, practice.name, n))
+            for i in xrange(n / 6):
+                # 创建MissonGroup
+                mg = MissonGroup(course.id, practice.name, misson_group_order)
+                mg.questions = confirm_questions[i * 6:i * 6 + 6]
+                log.info('课程%s 添加关卡%d' % (course.name, misson_group_order))
+                log.info(mg.questions)
+                misson_group_order += 1
+                print mg
 
 
 def get_item(p_id, p_name, course):
     """获取CategoryItem1 这里选字词练习和词汇"""
     items = CategoryItem.get_categoryitem_by_coursesection(p_id)
     if p_name == '字词练习':
-        logging.debug('%s,开始抽取汉字问题' % course.name)
-        extract_hanzi_question(items)
+        log.debug('%s,开始抽取汉字问题' % course.name)
+        c_qs, b_qs = extract_hanzi_question(items)
+        # 汉字题需要排序
+        c_qs = sort_hanzi_question(c_qs)
+        # 如果不是6的倍数补全
+        fix_six_times(c_qs, b_qs)
+
     elif p_name == '词汇':
-        logging.debug('%s,开始抽取的词语问题' % course.name)
-        extract_ciyu_question(items)
+        log.debug('%s,开始抽取的词语问题' % course.name)
+        c_qs, b_qs = extract_ciyu_question(items)
+        # 如果不是6的倍数补全
+        fix_six_times(c_qs, b_qs)
+    # 返回确定的题组
+    return c_qs
 
 
 def extract_hanzi_question(items):
@@ -69,80 +90,67 @@ def extract_hanzi_question(items):
     need_fix = 0
     confirm_questions = []  # 必须题
     back_questions = []  # 备选题
-    for item in items[:1]:
-        logging.debug('获取到汉字：%s' % item.name)
+    for item in items:
         qs = Question.get_question_by_item(item.id)
         # 会写字逻辑
         if item.group == '会写':
+            log.debug('<会写字>：%s' % item.name)
             # 字音题1道
-            q = pop_random_question_by_type(qs, '字音')
-            confirm_questions.append(q)
-            logging.debug('%s 增加字音题%s' % (item.name, q))
-            if not q:
-                logging.debug('%s no 字音题，需要补充' % item.name)
+            if not extract_confirm_questions(qs, '字音', confirm_questions, item.name):
+                log.debug('%s no 字音题，需要补充' % item.name)
                 need_fix += 1
             # 字型题1道
-            q = pop_random_question_by_type(qs, '字形')
-            confirm_questions.append(q)
-            logging.debug('%s 增加字形题%s' % (item.name, q))
-            if not q:
-                logging.debug('%s no 字形题，需要补充' % item.name)
+            if not extract_confirm_questions(qs, '字形', confirm_questions, item.name):
+                log.debug('%s no 字形题，需要补充' % item.name)
                 need_fix += 1
             # 字义题1道
-            q = pop_random_question_by_type(qs, '字义')
-            confirm_questions.append(q)
-            logging.debug('%s 增加字义题 %s' % (item.name, q))
-            if not q:
-                logging.debug('%s no 字义题，不补充了' % item.name)
+            if not extract_confirm_questions(qs, '字义', confirm_questions, item.name):
+                log.debug('%s no 字义题，不补充了' % item.name)
             # 必须补充的题目
             for n in xrange(need_fix):
                 q = pop_random_question(qs)
                 if q:
                     confirm_questions.append(q)
-                    logging.debug('%s 随机补充必选题 %s' % (item.name, q))
+                    log.debug('%s 随机补充必选题 %s' % (item.name, q))
         # 会认字逻辑
         elif item.group == '会认':
+            log.debug('<会认字>：%s' % item.name)
             # 字音题1道
-            q = pop_random_question_by_type(qs, '字音')
-            confirm_questions.append(q)
-            logging.debug('%s 增加字音题%s' % (item.name, q))
-            if not q:
-                logging.debug('%s no 字音题' % item.name)
-    # 被抽到之外机抽5道题，分组时备选
-    back_questions = extract_back_questions(qs, confirm_questions)
+            if not extract_confirm_questions(qs, '字音', confirm_questions, item.name):
+                log.debug('%s no 字音题，不补充了' % item.name)
+        # 被抽到之外机抽5道题，分组时备选
+        back_questions += extract_back_questions(qs, confirm_questions)
+    return confirm_questions, back_questions
 
 
 def extract_ciyu_question(items):
     """抽词语题"""
     confirm_questions = []
     back_questions = []
-    for item in items[:2]:
-        logging.debug('获取到词语：%s' % item.name)
+    for item in items:
+        log.debug('获取到词语：%s' % item.name)
         qs = Question.get_question_by_item(item.id)
         if item.group == '近反义词练习':
-            # 近义词和反义词题1道
-            q = pop_random_question_by_type(qs, '近义词')
-            confirm_questions.append(q)
-            logging.debug('%s 增加近义词题 %s' % (item.name, q))
-            if not q:
-                logging.debug('%s no 近义词题，不补充了' % item.name)
-                # 近义词和反义词题1道
-            q = pop_random_question_by_type(qs, '反义词')
-            confirm_questions.append(q)
-            logging.debug('%s 增加反义词题 %s' % (item.name, q))
-            if not q:
-                logging.debug('%s no 反义词题，不补充了' % item.name)
-    # 被抽到之外机抽5道题，分组时备选
-    back_questions = extract_back_questions(qs, confirm_questions)
+            # 近义词和反义词题各1道
+            if not extract_confirm_questions(qs, '近义词', confirm_questions, item.name):
+                log.debug('%s no 近义词题，不补充了' % item.name)
+            if not extract_confirm_questions(qs, '反义词', confirm_questions, item.name):
+                log.debug('%s no 反义词题，不补充了' % item.name)
+        else:
+            log.debug('%s has no 反义词题' % item.name)
+        # 被抽到之外机抽5道题，分组时备选
+        back_questions += extract_back_questions(qs, confirm_questions)
+    return confirm_questions, back_questions
 
 
-def extract_confirm_questions(qs, q_type, confirm_qs):
+def extract_confirm_questions(qs, q_type, confirm_qs, i_name=''):
+    """根据类型抽取必选题"""
     q = pop_random_question_by_type(qs, q_type)
     if not q:
-        logging.debug('%s no %s题，需要补充' % (item.name, q_type))
+        log.debug('%s no %s题型' % (i_name, q_type))
         return False
     confirm_qs.append(q)
-    logging.debug('%s 增加%s题%s' % (item.name, q_type, q))
+    log.debug('%s 增加%s题%s' % (i_name, q_type, q))
     return True
 
 
@@ -153,20 +161,8 @@ def extract_back_questions(qs, confirm_qs):
     for x in xrange(min(5, len(qs))):
         q = pop_random_question(left_qs)
         b_qs.append(q)
-        logging.debug('添加备选题%s' % q)
+        log.debug('添加备选题%s' % q)
     return b_qs
-
-
-def pop_random_question_by_type(qs, q_type):
-    """根据类型pop随机题目"""
-    type_qs = [q for q in qs if q.q_type == q_type]
-    return pop_random_question(type_qs)
-
-
-def pop_random_question(qs):
-    """选随机题目"""
-    if qs:
-        return qs.pop(randint(0, len(qs) - 1))
 
 
 if __name__ == '__main__':

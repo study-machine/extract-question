@@ -9,9 +9,16 @@ config = {
     'cursorclass': pymysql.cursors.DictCursor,
 }
 
+
 class BaseModel(object):
     conn = pymysql.connect(**config)
+
     @classmethod
     def get_cursor(cls):
         return cls.conn.cursor()
 
+    @classmethod
+    def select(cls, sql):
+        cursor = cls.get_cursor()
+        cursor.execute(sql)
+        return cursor.fetchall()
