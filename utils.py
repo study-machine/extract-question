@@ -3,7 +3,7 @@ from random import randint
 import logging as log
 
 log.basicConfig(
-    level=log.INFO,
+    level=log.DEBUG,
     format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
     datefmt='%y%m%d %H:%M:%S',
     filename='extractQuestion.log',

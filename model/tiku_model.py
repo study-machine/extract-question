@@ -165,13 +165,17 @@ class Question(BaseModel):
 
     @classmethod
     def get_question_by_item(cls, i_id):
-        """根据CourseSection找到关联的CategoryItem"""
+        """
+        根据CourseSection找到关联的CategoryItem
+        本次要求填空题,Question表的QuestionType=1
+        """
         sql = """
         SELECT q.QuestionID,q.Question,relate2.CategoryItemID
         FROM edu_relate_questioncategory AS relate
         INNER JOIN wx_edu_questions_new AS q 
         ON q.QuestionID = relate.QuestionID
         AND relate.CategoryItemID = {}
+        AND q.QuestionType=1
         INNER JOIN edu_relate_questioncategory as relate2 
         ON q.QuestionID = relate2.QuestionID
         AND relate2.CategoryID=2
