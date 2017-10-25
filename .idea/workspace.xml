@@ -3,6 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="9d8f55a4-cfa1-4938-93ac-74b4b54672f4" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/extractQuestion.log" afterPath="$PROJECT_DIR$/extractQuestion.log" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/model/base_model.py" afterPath="$PROJECT_DIR$/model/base_model.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/model/tiku_model.py" afterPath="$PROJECT_DIR$/model/tiku_model.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -13,15 +16,15 @@
   </component>
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/extract_questions$test_main.coverage" NAME="test_main Coverage Results" MODIFIED="1508725915703" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/extract_questions$main.coverage" NAME="main Coverage Results" MODIFIED="1508838845208" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/extract_questions$main.coverage" NAME="main Coverage Results" MODIFIED="1508862348087" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
       <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="500">
-              <caret line="64" column="24" lean-forward="true" selection-start-line="64" selection-start-column="24" selection-end-line="64" selection-end-column="24" />
+            <state relative-caret-position="-1526">
+              <caret line="50" column="13" lean-forward="true" selection-start-line="50" selection-start-column="13" selection-end-line="50" selection-end-column="13" />
               <folding>
                 <element signature="e#14#44#0" expanded="true" />
               </folding>
@@ -29,31 +32,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="utils.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/utils.py">
+      <file leaf-file-name="tiku_model.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/model/tiku_model.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="176">
-              <caret line="9" column="17" lean-forward="false" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="需求" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/需求">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="396">
-              <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="extractQuestion.log" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/extractQuestion.log">
-          <provider selected="true" editor-type-id="LogFileEditorProvider">
-            <state relative-caret-position="242">
-              <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+            <state relative-caret-position="562">
+              <caret line="236" column="53" lean-forward="false" selection-start-line="236" selection-start-column="53" selection-end-line="236" selection-end-column="53" />
+              <folding>
+                <element signature="e#14#33#0" expanded="true" />
+                <element signature="e#85#484#0" expanded="false" />
+                <marker date="1508909785000" expanded="true" signature="897:948" ph="SELECT Teach... wx_edu_teachingmaterial" />
+                <marker date="1508909785000" expanded="true" signature="1584:1691" ph="SELECT JiaoC... wx_edu_jiaocai" />
+                <marker date="1508909785000" expanded="true" signature="2420:2531" ph="SELECT Cours... wx_edu_coursesection" />
+                <marker date="1508909785000" expanded="true" signature="2970:3095" ph="SELECT Cours... wx_edu_coursesection" />
+                <marker date="1508909785000" expanded="true" signature="3842:4220" ph="SELECT DISTI... edu_relate_coursesectioncategory" />
+                <marker date="1508909785000" expanded="true" signature="4931:5330" ph="SELECT q.Que... edu_relate_questioncategory" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -62,26 +55,27 @@
         <entry file="file://$PROJECT_DIR$/model/base_model.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="242">
-              <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+              <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tiku_model.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/model/tiku_model.py">
+      <file leaf-file-name="utils.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/utils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2732">
-              <caret line="188" column="24" lean-forward="false" selection-start-line="188" selection-start-column="24" selection-end-line="188" selection-end-column="24" />
-              <folding>
-                <element signature="e#14#33#0" expanded="true" />
-                <marker date="1508845149000" expanded="true" signature="841:892" ph="SELECT Teach... wx_edu_teachingmaterial" />
-                <marker date="1508845149000" expanded="true" signature="1576:1683" ph="SELECT JiaoC... wx_edu_jiaocai" />
-                <marker date="1508845149000" expanded="true" signature="2505:2616" ph="SELECT Cours... wx_edu_coursesection" />
-                <marker date="1508845149000" expanded="true" signature="2944:3069" ph="SELECT Cours... wx_edu_coursesection" />
-                <marker date="1508845149000" expanded="true" signature="3835:4213" ph="SELECT DISTI... edu_relate_coursesectioncategory" />
-                <marker date="1508845149000" expanded="true" signature="5042:5441" ph="SELECT q.Que... edu_relate_questioncategory" />
-              </folding>
+            <state relative-caret-position="445">
+              <caret line="70" column="4" lean-forward="false" selection-start-line="70" selection-start-column="4" selection-end-line="70" selection-end-column="4" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="extractQuestion.log" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/extractQuestion.log">
+          <provider selected="true" editor-type-id="LogFileEditorProvider">
+            <state relative-caret-position="327">
+              <caret line="1296" column="9" lean-forward="true" selection-start-line="1296" selection-start-column="9" selection-end-line="1296" selection-end-column="9" />
             </state>
           </provider>
         </entry>
@@ -112,10 +106,10 @@
         <option value="$PROJECT_DIR$/little_orm.py" />
         <option value="$PROJECT_DIR$/category.py" />
         <option value="$PROJECT_DIR$/main.py" />
-        <option value="$PROJECT_DIR$/model/base_model.py" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/utils.py" />
         <option value="$PROJECT_DIR$/extractQuestion.log" />
+        <option value="$PROJECT_DIR$/model/base_model.py" />
         <option value="$PROJECT_DIR$/model/tiku_model.py" />
       </list>
     </option>
@@ -127,7 +121,6 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="15" />
     <option name="y" value="23" />
     <option name="width" value="1440" />
     <option name="height" value="809" />
@@ -148,6 +141,7 @@
     </navigator>
     <panes>
       <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -164,7 +158,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -257,13 +250,13 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1685879" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295129" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22766571" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295129" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.18731989" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21346705" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39971346" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39971346" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -286,18 +279,69 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/model/tiku_model.py</url>
-          <line>171</line>
-          <option name="timeStamp" value="21" />
-        </line-breakpoint>
-      </breakpoints>
-      <option name="time" value="23" />
+      <option name="time" value="24" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="968">
+          <caret line="45" column="10" lean-forward="false" selection-start-line="45" selection-start-column="10" selection-end-line="45" selection-end-column="10" />
+          <folding>
+            <element signature="e#14#44#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1518">
+          <caret line="70" column="4" lean-forward="false" selection-start-line="70" selection-start-column="4" selection-end-line="70" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/需求">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="396">
+          <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/extractQuestion.log">
+      <provider selected="true" editor-type-id="LogFileEditorProvider">
+        <state relative-caret-position="28996">
+          <caret line="1318" column="0" lean-forward="false" selection-start-line="1318" selection-start-column="0" selection-end-line="1318" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/tiku_model.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1078">
+          <caret line="63" column="0" lean-forward="true" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
+          <folding>
+            <element signature="e#14#33#0" expanded="true" />
+            <element signature="e#85#484#0" expanded="false" />
+            <marker date="1508909785000" expanded="true" signature="897:948" ph="SELECT Teach... wx_edu_teachingmaterial" />
+            <marker date="1508909785000" expanded="true" signature="1584:1691" ph="SELECT JiaoC... wx_edu_jiaocai" />
+            <marker date="1508909785000" expanded="true" signature="2420:2531" ph="SELECT Cours... wx_edu_coursesection" />
+            <marker date="1508909785000" expanded="true" signature="2970:3095" ph="SELECT Cours... wx_edu_coursesection" />
+            <marker date="1508909785000" expanded="true" signature="3842:4220" ph="SELECT DISTI... edu_relate_coursesectioncategory" />
+            <marker date="1508909785000" expanded="true" signature="4931:5330" ph="SELECT q.Que... edu_relate_questioncategory" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/base_model.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="440">
+          <caret line="20" column="24" lean-forward="true" selection-start-line="20" selection-start-column="24" selection-end-line="20" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -345,12 +389,13 @@
           <caret line="188" column="24" lean-forward="true" selection-start-line="188" selection-start-column="24" selection-end-line="188" selection-end-column="24" />
           <folding>
             <element signature="e#14#33#0" expanded="true" />
-            <marker date="1508845149000" expanded="true" signature="841:892" ph="SELECT Teach... wx_edu_teachingmaterial" />
-            <marker date="1508845149000" expanded="true" signature="1576:1683" ph="SELECT JiaoC... wx_edu_jiaocai" />
-            <marker date="1508845149000" expanded="true" signature="2505:2616" ph="SELECT Cours... wx_edu_coursesection" />
-            <marker date="1508845149000" expanded="true" signature="2944:3069" ph="SELECT Cours... wx_edu_coursesection" />
-            <marker date="1508845149000" expanded="true" signature="3835:4213" ph="SELECT DISTI... edu_relate_coursesectioncategory" />
-            <marker date="1508845149000" expanded="true" signature="5042:5441" ph="SELECT q.Que... edu_relate_questioncategory" />
+            <element signature="e#85#484#0" expanded="false" />
+            <marker date="1508909785000" expanded="true" signature="897:948" ph="SELECT Teach... wx_edu_teachingmaterial" />
+            <marker date="1508909785000" expanded="true" signature="1584:1691" ph="SELECT JiaoC... wx_edu_jiaocai" />
+            <marker date="1508909785000" expanded="true" signature="2420:2531" ph="SELECT Cours... wx_edu_coursesection" />
+            <marker date="1508909785000" expanded="true" signature="2970:3095" ph="SELECT Cours... wx_edu_coursesection" />
+            <marker date="1508909785000" expanded="true" signature="3842:4220" ph="SELECT DISTI... edu_relate_coursesectioncategory" />
+            <marker date="1508909785000" expanded="true" signature="4931:5330" ph="SELECT q.Que... edu_relate_questioncategory" />
           </folding>
         </state>
       </provider>
@@ -395,12 +440,13 @@
           <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
           <folding>
             <element signature="e#14#33#0" expanded="true" />
-            <marker date="1508845149000" expanded="true" signature="841:892" ph="SELECT Teach... wx_edu_teachingmaterial" />
-            <marker date="1508845149000" expanded="true" signature="1576:1683" ph="SELECT JiaoC... wx_edu_jiaocai" />
-            <marker date="1508845149000" expanded="true" signature="2505:2616" ph="SELECT Cours... wx_edu_coursesection" />
-            <marker date="1508845149000" expanded="true" signature="2944:3069" ph="SELECT Cours... wx_edu_coursesection" />
-            <marker date="1508845149000" expanded="true" signature="3835:4213" ph="SELECT DISTI... edu_relate_coursesectioncategory" />
-            <marker date="1508845149000" expanded="true" signature="5042:5441" ph="SELECT q.Que... edu_relate_questioncategory" />
+            <element signature="e#85#484#0" expanded="false" />
+            <marker date="1508909785000" expanded="true" signature="897:948" ph="SELECT Teach... wx_edu_teachingmaterial" />
+            <marker date="1508909785000" expanded="true" signature="1584:1691" ph="SELECT JiaoC... wx_edu_jiaocai" />
+            <marker date="1508909785000" expanded="true" signature="2420:2531" ph="SELECT Cours... wx_edu_coursesection" />
+            <marker date="1508909785000" expanded="true" signature="2970:3095" ph="SELECT Cours... wx_edu_coursesection" />
+            <marker date="1508909785000" expanded="true" signature="3842:4220" ph="SELECT DISTI... edu_relate_coursesectioncategory" />
+            <marker date="1508909785000" expanded="true" signature="4931:5330" ph="SELECT q.Que... edu_relate_questioncategory" />
           </folding>
         </state>
       </provider>
@@ -437,12 +483,13 @@
           <caret line="56" column="0" lean-forward="false" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
           <folding>
             <element signature="e#14#33#0" expanded="true" />
-            <marker date="1508845149000" expanded="true" signature="841:892" ph="SELECT Teach... wx_edu_teachingmaterial" />
-            <marker date="1508845149000" expanded="true" signature="1576:1683" ph="SELECT JiaoC... wx_edu_jiaocai" />
-            <marker date="1508845149000" expanded="true" signature="2505:2616" ph="SELECT Cours... wx_edu_coursesection" />
-            <marker date="1508845149000" expanded="true" signature="2944:3069" ph="SELECT Cours... wx_edu_coursesection" />
-            <marker date="1508845149000" expanded="true" signature="3835:4213" ph="SELECT DISTI... edu_relate_coursesectioncategory" />
-            <marker date="1508845149000" expanded="true" signature="5042:5441" ph="SELECT q.Que... edu_relate_questioncategory" />
+            <element signature="e#85#484#0" expanded="false" />
+            <marker date="1508909785000" expanded="true" signature="897:948" ph="SELECT Teach... wx_edu_teachingmaterial" />
+            <marker date="1508909785000" expanded="true" signature="1584:1691" ph="SELECT JiaoC... wx_edu_jiaocai" />
+            <marker date="1508909785000" expanded="true" signature="2420:2531" ph="SELECT Cours... wx_edu_coursesection" />
+            <marker date="1508909785000" expanded="true" signature="2970:3095" ph="SELECT Cours... wx_edu_coursesection" />
+            <marker date="1508909785000" expanded="true" signature="3842:4220" ph="SELECT DISTI... edu_relate_coursesectioncategory" />
+            <marker date="1508909785000" expanded="true" signature="4931:5330" ph="SELECT q.Que... edu_relate_questioncategory" />
           </folding>
         </state>
       </provider>
@@ -455,12 +502,13 @@
           <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
           <folding>
             <element signature="e#14#33#0" expanded="true" />
-            <marker date="1508845149000" expanded="true" signature="841:892" ph="SELECT Teach... wx_edu_teachingmaterial" />
-            <marker date="1508845149000" expanded="true" signature="1576:1683" ph="SELECT JiaoC... wx_edu_jiaocai" />
-            <marker date="1508845149000" expanded="true" signature="2505:2616" ph="SELECT Cours... wx_edu_coursesection" />
-            <marker date="1508845149000" expanded="true" signature="2944:3069" ph="SELECT Cours... wx_edu_coursesection" />
-            <marker date="1508845149000" expanded="true" signature="3835:4213" ph="SELECT DISTI... edu_relate_coursesectioncategory" />
-            <marker date="1508845149000" expanded="true" signature="5042:5441" ph="SELECT q.Que... edu_relate_questioncategory" />
+            <element signature="e#85#484#0" expanded="false" />
+            <marker date="1508909785000" expanded="true" signature="897:948" ph="SELECT Teach... wx_edu_teachingmaterial" />
+            <marker date="1508909785000" expanded="true" signature="1584:1691" ph="SELECT JiaoC... wx_edu_jiaocai" />
+            <marker date="1508909785000" expanded="true" signature="2420:2531" ph="SELECT Cours... wx_edu_coursesection" />
+            <marker date="1508909785000" expanded="true" signature="2970:3095" ph="SELECT Cours... wx_edu_coursesection" />
+            <marker date="1508909785000" expanded="true" signature="3842:4220" ph="SELECT DISTI... edu_relate_coursesectioncategory" />
+            <marker date="1508909785000" expanded="true" signature="4931:5330" ph="SELECT q.Que... edu_relate_questioncategory" />
           </folding>
         </state>
       </provider>
@@ -493,12 +541,13 @@
           <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
           <folding>
             <element signature="e#14#33#0" expanded="true" />
-            <marker date="1508845149000" expanded="true" signature="841:892" ph="SELECT Teach... wx_edu_teachingmaterial" />
-            <marker date="1508845149000" expanded="true" signature="1576:1683" ph="SELECT JiaoC... wx_edu_jiaocai" />
-            <marker date="1508845149000" expanded="true" signature="2505:2616" ph="SELECT Cours... wx_edu_coursesection" />
-            <marker date="1508845149000" expanded="true" signature="2944:3069" ph="SELECT Cours... wx_edu_coursesection" />
-            <marker date="1508845149000" expanded="true" signature="3835:4213" ph="SELECT DISTI... edu_relate_coursesectioncategory" />
-            <marker date="1508845149000" expanded="true" signature="5042:5441" ph="SELECT q.Que... edu_relate_questioncategory" />
+            <element signature="e#85#484#0" expanded="false" />
+            <marker date="1508909785000" expanded="true" signature="897:948" ph="SELECT Teach... wx_edu_teachingmaterial" />
+            <marker date="1508909785000" expanded="true" signature="1584:1691" ph="SELECT JiaoC... wx_edu_jiaocai" />
+            <marker date="1508909785000" expanded="true" signature="2420:2531" ph="SELECT Cours... wx_edu_coursesection" />
+            <marker date="1508909785000" expanded="true" signature="2970:3095" ph="SELECT Cours... wx_edu_coursesection" />
+            <marker date="1508909785000" expanded="true" signature="3842:4220" ph="SELECT DISTI... edu_relate_coursesectioncategory" />
+            <marker date="1508909785000" expanded="true" signature="4931:5330" ph="SELECT q.Que... edu_relate_questioncategory" />
           </folding>
         </state>
       </provider>
@@ -510,12 +559,13 @@
           <caret line="85" column="10" lean-forward="false" selection-start-line="85" selection-start-column="10" selection-end-line="85" selection-end-column="10" />
           <folding>
             <element signature="e#14#33#0" expanded="true" />
-            <marker date="1508845149000" expanded="true" signature="841:892" ph="SELECT Teach... wx_edu_teachingmaterial" />
-            <marker date="1508845149000" expanded="true" signature="1576:1683" ph="SELECT JiaoC... wx_edu_jiaocai" />
-            <marker date="1508845149000" expanded="true" signature="2505:2616" ph="SELECT Cours... wx_edu_coursesection" />
-            <marker date="1508845149000" expanded="true" signature="2944:3069" ph="SELECT Cours... wx_edu_coursesection" />
-            <marker date="1508845149000" expanded="true" signature="3835:4213" ph="SELECT DISTI... edu_relate_coursesectioncategory" />
-            <marker date="1508845149000" expanded="true" signature="5042:5441" ph="SELECT q.Que... edu_relate_questioncategory" />
+            <element signature="e#85#484#0" expanded="false" />
+            <marker date="1508909785000" expanded="true" signature="897:948" ph="SELECT Teach... wx_edu_teachingmaterial" />
+            <marker date="1508909785000" expanded="true" signature="1584:1691" ph="SELECT JiaoC... wx_edu_jiaocai" />
+            <marker date="1508909785000" expanded="true" signature="2420:2531" ph="SELECT Cours... wx_edu_coursesection" />
+            <marker date="1508909785000" expanded="true" signature="2970:3095" ph="SELECT Cours... wx_edu_coursesection" />
+            <marker date="1508909785000" expanded="true" signature="3842:4220" ph="SELECT DISTI... edu_relate_coursesectioncategory" />
+            <marker date="1508909785000" expanded="true" signature="4931:5330" ph="SELECT q.Que... edu_relate_questioncategory" />
           </folding>
         </state>
       </provider>
@@ -527,12 +577,13 @@
           <caret line="52" column="0" lean-forward="true" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
           <folding>
             <element signature="e#14#33#0" expanded="true" />
-            <marker date="1508845149000" expanded="true" signature="841:892" ph="SELECT Teach... wx_edu_teachingmaterial" />
-            <marker date="1508845149000" expanded="true" signature="1576:1683" ph="SELECT JiaoC... wx_edu_jiaocai" />
-            <marker date="1508845149000" expanded="true" signature="2505:2616" ph="SELECT Cours... wx_edu_coursesection" />
-            <marker date="1508845149000" expanded="true" signature="2944:3069" ph="SELECT Cours... wx_edu_coursesection" />
-            <marker date="1508845149000" expanded="true" signature="3835:4213" ph="SELECT DISTI... edu_relate_coursesectioncategory" />
-            <marker date="1508845149000" expanded="true" signature="5042:5441" ph="SELECT q.Que... edu_relate_questioncategory" />
+            <element signature="e#85#484#0" expanded="false" />
+            <marker date="1508909785000" expanded="true" signature="897:948" ph="SELECT Teach... wx_edu_teachingmaterial" />
+            <marker date="1508909785000" expanded="true" signature="1584:1691" ph="SELECT JiaoC... wx_edu_jiaocai" />
+            <marker date="1508909785000" expanded="true" signature="2420:2531" ph="SELECT Cours... wx_edu_coursesection" />
+            <marker date="1508909785000" expanded="true" signature="2970:3095" ph="SELECT Cours... wx_edu_coursesection" />
+            <marker date="1508909785000" expanded="true" signature="3842:4220" ph="SELECT DISTI... edu_relate_coursesectioncategory" />
+            <marker date="1508909785000" expanded="true" signature="4931:5330" ph="SELECT q.Que... edu_relate_questioncategory" />
           </folding>
         </state>
       </provider>
@@ -564,6 +615,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1526">
+          <caret line="50" column="13" lean-forward="true" selection-start-line="50" selection-start-column="13" selection-end-line="50" selection-end-column="13" />
+          <folding>
+            <element signature="e#14#44#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/需求">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="396">
@@ -572,26 +633,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/model/base_model.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="9" column="17" lean-forward="false" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/extractQuestion.log">
       <provider selected="true" editor-type-id="LogFileEditorProvider">
-        <state relative-caret-position="242">
-          <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+        <state relative-caret-position="327">
+          <caret line="1296" column="9" lean-forward="true" selection-start-line="1296" selection-start-column="9" selection-end-line="1296" selection-end-column="9" />
         </state>
       </provider>
       <provider editor-type-id="text-editor">
@@ -601,28 +646,35 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/model/base_model.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="500">
-          <caret line="64" column="24" lean-forward="true" selection-start-line="64" selection-start-column="24" selection-end-line="64" selection-end-column="24" />
-          <folding>
-            <element signature="e#14#44#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="242">
+          <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="445">
+          <caret line="70" column="4" lean-forward="false" selection-start-line="70" selection-start-column="4" selection-end-line="70" selection-end-column="4" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/model/tiku_model.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2732">
-          <caret line="188" column="24" lean-forward="false" selection-start-line="188" selection-start-column="24" selection-end-line="188" selection-end-column="24" />
+        <state relative-caret-position="562">
+          <caret line="236" column="53" lean-forward="false" selection-start-line="236" selection-start-column="53" selection-end-line="236" selection-end-column="53" />
           <folding>
             <element signature="e#14#33#0" expanded="true" />
-            <marker date="1508845149000" expanded="true" signature="841:892" ph="SELECT Teach... wx_edu_teachingmaterial" />
-            <marker date="1508845149000" expanded="true" signature="1576:1683" ph="SELECT JiaoC... wx_edu_jiaocai" />
-            <marker date="1508845149000" expanded="true" signature="2505:2616" ph="SELECT Cours... wx_edu_coursesection" />
-            <marker date="1508845149000" expanded="true" signature="2944:3069" ph="SELECT Cours... wx_edu_coursesection" />
-            <marker date="1508845149000" expanded="true" signature="3835:4213" ph="SELECT DISTI... edu_relate_coursesectioncategory" />
-            <marker date="1508845149000" expanded="true" signature="5042:5441" ph="SELECT q.Que... edu_relate_questioncategory" />
+            <element signature="e#85#484#0" expanded="false" />
+            <marker date="1508909785000" expanded="true" signature="897:948" ph="SELECT Teach... wx_edu_teachingmaterial" />
+            <marker date="1508909785000" expanded="true" signature="1584:1691" ph="SELECT JiaoC... wx_edu_jiaocai" />
+            <marker date="1508909785000" expanded="true" signature="2420:2531" ph="SELECT Cours... wx_edu_coursesection" />
+            <marker date="1508909785000" expanded="true" signature="2970:3095" ph="SELECT Cours... wx_edu_coursesection" />
+            <marker date="1508909785000" expanded="true" signature="3842:4220" ph="SELECT DISTI... edu_relate_coursesectioncategory" />
+            <marker date="1508909785000" expanded="true" signature="4931:5330" ph="SELECT q.Que... edu_relate_questioncategory" />
           </folding>
         </state>
       </provider>

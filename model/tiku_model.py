@@ -2,35 +2,37 @@
 from utils import *
 from model.base_model import *
 
-# 版本表
-T_VERSION = 'wx_edu_teachingmaterial'
-# 教材表
-T_JIAOCAI = 'wx_edu_jiaocai'
-# 章节表
-T_SECTION = 'wx_edu_coursesection'
-# CategoryItem表
-T_ITEM = 'edu_categoryitem'
-# 题目表
-T_QUESTION = 'wx_edu_questions_new'
-# 章节和Item关联表
-R_SECTION_ITEM = 'edu_relate_coursesectioncategory'
-# 题目和Item关联表
-R_QUESTION_ITEM = 'edu_relate_questioncategory'
+
+class TestDB:
+    """测试库表名"""
+    # 版本表
+    T_VERSION = 'wx_edu_teachingmaterial'
+    # 教材表
+    T_JIAOCAI = 'wx_edu_jiaocai'
+    # 章节表
+    T_SECTION = 'wx_edu_coursesection'
+    # CategoryItem表
+    T_ITEM = 'edu_categoryitem'
+    # 题目表
+    T_QUESTION = 'wx_edu_questions_new'
+    # 章节和Item关联表
+    R_SECTION_ITEM = 'edu_relate_coursesectioncategory'
+    # 题目和Item关联表
+    R_QUESTION_ITEM = 'edu_relate_questioncategory'
 
 
 class JiaoCaiVersion(BaseModel):
     """教材版本"""
-
-    def __init__(self, id, name):
-        self.id = id
-        self.name = name
-        self.jiaocais = []
+    id = 0
+    name = ''
+    jiaocais = []
 
     def __repr__(self):
         return '<id:{},name:{}>'.format(self.id, self.name)
 
     def get_jiaocai(self):
-        if not self.jiaocais:
+        """获取版本的教材"""
+        if self.id and not self.jiaocais:
             self.jiaocais = JiaoCai.get_jiaocai_by_version(self.id)
 
     @classmethod
@@ -39,17 +41,21 @@ class JiaoCaiVersion(BaseModel):
         SELECT TeachingID,Name FROM wx_edu_teachingmaterial;
         """
         res = cls.select(sql)
-        return [cls(int(d['TeachingID']), d['Name'].encode('utf8')) for d in res]
+        return [
+            cls(
+                id=int(d['TeachingID']),
+                name=uni_to_u8(d['Name'])
+            )
+            for d in res
+        ]
 
 
 class JiaoCai(BaseModel):
     """教材，含年级和分科信息"""
 
-    def __init__(self, id, grade, subject=1, v_id=0):
-        self.id = int(id)
-        self.grade = int(grade)
-        self.subject = int(subject)
-        self.v_id = v_id
+    id = 0
+    grade = 0
+    subject = 1
 
     def __repr__(self):
         return '<id:{},grade:{}>'.format(self.id, self.grade)
@@ -63,10 +69,15 @@ class JiaoCai(BaseModel):
         # IsActive 为可用教材
         sql = """
         SELECT JiaoCaiID,Grade,Subject FROM wx_edu_jiaocai 
-        where IsActive=1 and TeachingID={} and subject={};
-        """.format(v_id, subject)
+        where IsActive=1 and TeachingID={} and subject=1;
+        """.format(v_id)
         res = cls.select(sql)
-        return [cls(d['JiaoCaiID'], d['Grade']) for d in res]
+        return [
+            cls(
+                id=int(d['JiaoCaiID']),
+                grade=int(d['Grade'])
+            ) for d in res
+        ]
 
 
 class CourseSection(BaseModel):
@@ -78,15 +89,14 @@ class CourseSection(BaseModel):
     L4:课程练习
     """
 
-    def __init__(self, id, name, parent_id=-1, level=3):
-        self.id = int(id)
-        self.name = uni_to_u8(name)
-        self.level = int(level)  # slevel
-        self.parent_id = int(parent_id)
-        # 子Section
-        self.childs = []
-        # 对应的category_items
-        self.category_items = []
+    id = 0
+    name = ''
+    level = 0
+    parent_id = 0
+    # 子Section
+    childs = []
+    # 对应的category_items
+    category_items = []
 
     def __repr__(self):
         return '<id:{},name:{}>'.format(self.id, self.name)
@@ -100,8 +110,13 @@ class CourseSection(BaseModel):
         where ParentID={} and IsDelete=0;
         """.format(self.id)
         res = self.select(sql)
-        self.childs = [CourseSection(
-            d['CourseSectionID'], d['SectionName'], d['ParentID']) for d in res]
+        self.childs = [
+            self.__class__(
+                id=int(d['CourseSectionID']),
+                name=uni_to_u8(d['SectionName']),
+                parent_id=int(d['ParentID'])
+            ) for d in res
+        ]
 
     @classmethod
     def get_real_courses_by_jiaocai(cls, j_id):
@@ -111,7 +126,14 @@ class CourseSection(BaseModel):
         where JiaoCaiID={} and IsDelete=0 and sLevel=3;
         """.format(j_id)
         res = cls.select(sql)
-        return [cls(d['CourseSectionID'], d['SectionName'].encode('utf8'), d['ParentID']) for d in res]
+        return [
+            cls(
+                id=int(d['CourseSectionID']),
+                name=uni_to_u8(d['SectionName']),
+                parent_id=int(d['ParentID']),
+                level=3
+            ) for d in res
+        ]
 
 
 class CategoryItem(BaseModel):
@@ -120,14 +142,12 @@ class CategoryItem(BaseModel):
         CategoryID为2的分类，直接放入常量
     group 字符串
     """
-
-    def __init__(self, id, name, group=''):
-        super(CategoryItem, self).__init__()
-        self.id = int(id)
-        self.name = uni_to_u8(name)
-        self.group = uni_to_u8(group)
-        # 相关题目
-        self.questions = []
+    id = 0
+    name = ''
+    # 练习类型
+    group = ''
+    # 相关题目
+    questions = []
 
     def __repr__(self):
         return '<id:{},name:{},group:{}>'.format(self.id, self.name, self.group)
@@ -145,23 +165,22 @@ class CategoryItem(BaseModel):
         -- INNER JOIN wx_edu_coursesection AS sec ON sec.CourseSectionID = relate.CourseSectionID
         """.format(cs_id)
         res = cls.select(sql)
-        return [cls(d['CategoryItemID'], d['CategoryItem'], d['Group']) for d in res]
+        return [cls(
+            id=int(d['CategoryItemID']),
+            name=uni_to_u8(d['CategoryItem']),
+            group=uni_to_u8(d['Group'])
+        ) for d in res]
 
 
 class Question(BaseModel):
     """题目"""
 
-    def __init__(self, id, body, q_type):
-        self.id = int(id)
-        self.body = uni_to_u8(body)
-        self.q_type = uni_to_u8(q_type)
-        self.q_tuple = self.to_tuple()
+    id = 0
+    body = ''
+    q_type = ''
 
     def __repr__(self):
         return '<id:{},body:{},q_type:{}>'.format(self.id, self.body, self.q_type)
-
-    def to_tuple(self):
-        return (self.id, self.q_type)
 
     @classmethod
     def get_question_by_item(cls, i_id):
@@ -182,10 +201,11 @@ class Question(BaseModel):
         """.format(i_id)
         res = cls.select(sql)
         return [
-            cls(d['QuestionID'],
-                d['Question'],
-                get_question_type(d['CategoryItemID']),
-                )
+            cls(
+                id=int(d['QuestionID']),
+                body=uni_to_u8(d['Question']),
+                type=get_question_type(d['CategoryItemID']),
+            )
             for d in res
         ]
 
@@ -212,6 +232,7 @@ class MissonGroup(object):
         
         """
         pass
+
     def write_question_relate_to_db(self):
-        """将关卡和questions的id写入section_question关联表"""
+        """将关卡和questions的id写入section_question为level2的关联表"""
         pass
