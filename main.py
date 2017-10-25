@@ -21,29 +21,47 @@ def get_jiaocais(version):
         log.warning('版本:%s无可用教材' % version.name)
         return
     for j in jiaocais[1:]:
-        get_courses(j)
+        get_basic_assist(j)
 
 
-def get_courses(jiaocai):
-    courses = jiaocai.get_courses()
-    if not courses:
-        log.warning('该教材%s无可用课程' % jiaocai.name)
-        return
-    log.info('开始获取教材id：%s的课程' % jiaocai.id)
+def get_basic_assist(jiaocai):
+    assists = jiaocai.get_relate_assist()
+    get_ce(assists[0])
+
+
+def get_ce(assist):
+    ces = assist.get_relate_ce()
+    get_danyuan(ces[0])
+
+
+def get_danyuan(ce):
+    danyuans = ce.get_child_danyuan_list()
+    for danyuan in danyuans:
+        get_courses(danyuan)
+
+
+class MissionGenerator(object):
+    def __init__(self, danyuan):
+        self.danyuan = danyuan
+
+
+
+def get_courses(danyuan):
+    courses = danyuan.get_child_course_list()
     for c in courses:
         log.info('=' * 30)
-        log.info('课程《%s》' % c.name)
+        log.info('课程《%s》,id:%s' % (c.name, c.id))
         log.info('=' * 30)
         get_practice(c)
 
 
 def get_practice(course):
     """获取字或词的练习"""
-    course.get_practices()
+    practices = course.get_child_practices()
 
     misson_group_order = 0
 
-    for practice in course.childs:
+    for practice in practices:
         if practice.name == '字词练习' or practice.name == '词汇':
             log.info('%s has %s' % (course.name, practice.name))
 
@@ -56,19 +74,22 @@ def get_practice(course):
                 continue
             log.info('课程%s有%s题%d道' % (course.name, practice.name, n))
             for i in xrange(n / 6):
+                misson_group_order += 1
                 # 创建MissonGroup
-                mg = MissonGroup(course.id, practice.name, misson_group_order)
+                mg = MissonGroup(id=course.id, summary=practice.name, order_num=misson_group_order)
                 mg.questions = confirm_questions[i * 6:i * 6 + 6]
                 log.info('课程%s 添加关卡%d' % (course.name, misson_group_order))
                 log.info(mg.questions)
-                misson_group_order += 1
                 print mg
 
 
-def get_item(p_id, p_name, course):
+
+
+
+def get_item(practice_id, practice_name, course):
     """获取CategoryItem1 这里选字词练习和词汇"""
-    items = CategoryItem.get_categoryitem_by_coursesection(p_id)
-    if p_name == '字词练习':
+    items = CategoryItem.get_categoryitem_by_coursesection(practice_id)
+    if practice_name == '字词练习':
         log.debug('%s,开始抽取汉字问题' % course.name)
         c_qs, b_qs = extract_hanzi_question(items)
         # 汉字题需要排序
@@ -76,7 +97,7 @@ def get_item(p_id, p_name, course):
         # 如果不是6的倍数补全
         fix_six_times(c_qs, b_qs)
 
-    elif p_name == '词汇':
+    elif practice_name == '词汇':
         log.debug('%s,开始抽取的词语问题' % course.name)
         c_qs, b_qs = extract_ciyu_question(items)
         # 如果不是6的倍数补全
@@ -87,13 +108,13 @@ def get_item(p_id, p_name, course):
 
 def extract_hanzi_question(items):
     """抽汉字题"""
-    need_fix = 0
     confirm_questions = []  # 必须题
     back_questions = []  # 备选题
     for item in items:
         qs = Question.get_question_by_item(item.id)
         # 会写字逻辑
         if item.group == '会写':
+            need_fix = 0  # 必须题补充数
             log.debug('<会写字>：%s' % item.name)
             # 字音题1道
             if not extract_confirm_questions(qs, '字音', confirm_questions, item.name):
@@ -107,19 +128,20 @@ def extract_hanzi_question(items):
             if not extract_confirm_questions(qs, '字义', confirm_questions, item.name):
                 log.debug('%s no 字义题，不补充了' % item.name)
             # 必须补充的题目
-            for n in xrange(need_fix):
-                q = pop_random_question(qs)
-                if q:
-                    confirm_questions.append(q)
-                    log.debug('%s 随机补充必选题 %s' % (item.name, q))
+            if need_fix:
+                for n in xrange(need_fix):
+                    q = pop_random_question(qs)
+                    if q:
+                        confirm_questions.append(q)
+                        log.debug('%s 随机补充必选题 %s' % (item.name, q))
         # 会认字逻辑
         elif item.group == '会认':
             log.debug('<会认字>：%s' % item.name)
             # 字音题1道
             if not extract_confirm_questions(qs, '字音', confirm_questions, item.name):
                 log.debug('%s no 字音题，不补充了' % item.name)
-        # 被抽到之外机抽5道题，分组时备选
-        back_questions += extract_back_questions(qs, confirm_questions)
+        # 被抽到之外机抽1道题，分组时备选
+        back_questions += extract_back_questions(qs, confirm_questions, 1)
     return confirm_questions, back_questions
 
 
@@ -138,8 +160,8 @@ def extract_ciyu_question(items):
                 log.debug('%s no 反义词题，不补充了' % item.name)
         else:
             log.debug('%s has no 反义词题' % item.name)
-        # 被抽到之外机抽5道题，分组时备选
-        back_questions += extract_back_questions(qs, confirm_questions)
+        # 被抽到之外机抽1道题，分组时备选
+        back_questions += extract_back_questions(qs, confirm_questions, 1)
     return confirm_questions, back_questions
 
 
@@ -154,11 +176,11 @@ def extract_confirm_questions(qs, q_type, confirm_qs, i_name=''):
     return True
 
 
-def extract_back_questions(qs, confirm_qs):
-    """备选题，已选题之外再抽至少5道题"""
+def extract_back_questions(qs, confirm_qs, n):
+    """备选题，已选题之外再抽至少n道题"""
     b_qs = []
     left_qs = list(set(qs) - set(confirm_qs))
-    for x in xrange(min(5, len(qs))):
+    for x in xrange(min(n, len(qs))):
         q = pop_random_question(left_qs)
         b_qs.append(q)
         log.debug('添加备选题%s' % q)

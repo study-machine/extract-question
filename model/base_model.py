@@ -1,4 +1,6 @@
+# coding=utf-8
 import pymysql
+from utils import MyLocalException
 
 config = {
     'host': 'test.wangxiyang.com',
@@ -26,3 +28,16 @@ class BaseModel(object):
         cursor = cls.get_cursor()
         cursor.execute(sql)
         return cursor.fetchall()
+
+    @classmethod
+    def insert(cls, sql, auto_commit=True):
+        cursor = cls.get_cursor()
+        cursor.execute(sql)
+        if auto_commit:
+            cls.commit()
+        return cursor.lastrowid
+
+    @classmethod
+    def commit(cls):
+        cls.conn.commit()
+
