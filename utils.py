@@ -1,4 +1,5 @@
 # coding=utf8
+from datetime import datetime
 from random import randint
 import logging as log
 
@@ -28,14 +29,19 @@ DB_NAME = TestDB
 
 log.basicConfig(
     level=log.DEBUG,
-    format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
-    datefmt='%y%m%d %H:%M:%S',
+    # format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
+    format='%(levelname)s %(message)s',
+    datefmt='%y-%m-%d %H:%M:%S',
     filename='question.log',
     filemode='w')
 
 
 class MyLocalException(Exception):
     pass
+
+
+def get_datetime_str():
+    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 
 def uni_to_u8(s):

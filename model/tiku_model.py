@@ -1,5 +1,6 @@
 # coding=utf8
 from utils import *
+from datetime import datetime
 from model.base_model import *
 
 
@@ -38,13 +39,14 @@ class CourseSectionBase(BaseModel):
             TeachingAssistID=self.assist_id,
             Grade=self.grade,
             Subject=self.subject,
-            QuestionType=self.qt
+            QuestionType=self.qt,
+            AddTime=get_datetime_str()
         )
         sql = """
         INSERT INTO wx_edu_coursesection (SectionName,Summary,sLevel,ParentID,
-        OrderNum,JiaoCaiID,SectionOrder,TeachingAssistID,Grade,Subject,QuestionType)
-        VALUES({SectionName},{Summary},{sLevel},{ParentID},
-        {OrderNum},{JiaoCaiID},{SectionOrder},{TeachingAssistID},{Grade},{Subject},{QuestionType})
+        OrderNum,JiaoCaiID,SectionOrder,TeachingAssistID,Grade,Subject,QuestionType,AddTime)
+        VALUES('{SectionName}','{Summary}',{sLevel},{ParentID},
+        {OrderNum},{JiaoCaiID},{SectionOrder},{TeachingAssistID},{Grade},{Subject},{QuestionType},'{AddTime}')
         """.format(**fields)
         self.id = self.insert(sql)
 
@@ -76,6 +78,7 @@ class CourseSectionBase(BaseModel):
                 order_num=int(d['OrderNum']),
                 jiaocai_id=self.jiaocai_id,
                 assist_id=self.assist_id,
+                parent_section=self
             ) for d in res
         ]
 
@@ -146,7 +149,6 @@ class JiaocaiAssist(BaseModel):
     name = ''  # 人教版1年级语文同步练关卡题
     summary = ''
     jiaocai_id = 0  # 对应的教材id
-    question_type = 0  # api组要求的特定值
     grade = 0  # 年级
     subject = 1  # 默认语文
 
@@ -182,7 +184,7 @@ class JiaocaiAssist(BaseModel):
         )
         sql = """
         INSERT INTO wx_edu_teachingassist (Name,Summary,HasSection,JiaocaiID,QuestionType,OrderNum,Grade,Subject)
-        VALUES ({Name},{Summary},{HasSection},{JiaocaiID},{QuestionType},{OrderNum},{Grade},{Subject})
+        VALUES ('{Name}','{Summary}',{HasSection},{JiaocaiID},{QuestionType},{OrderNum},{Grade},{Subject})
         """.format(**fields)
         self.id = self.insert(sql)
 
@@ -247,6 +249,8 @@ class SectionRealCourse(CourseSectionBase):
     level = 3
     # 对应的category_items
     category_items = []
+    # 课程的题目
+    qs = []
 
     def get_child_practices(self):
         return self.get_childs_by_id(SectionPractice)
@@ -311,8 +315,9 @@ class Question(BaseModel):
         根据CourseSection找到关联的CategoryItem
         本次要求填空题,Question表的QuestionType=1
         """
+        # sql还需要优化
         sql = """
-        SELECT q.QuestionID,q.Question,relate2.CategoryItemID
+        SELECT DISTINCT q.QuestionID,q.Question,relate2.CategoryItemID
         FROM edu_relate_questioncategory AS relate
         INNER JOIN wx_edu_questions_new AS q 
         ON q.QuestionID = relate.QuestionID
@@ -333,7 +338,7 @@ class Question(BaseModel):
         ]
 
 
-class MissonGroup(CourseSectionBase):
+class Misson(CourseSectionBase):
     """
     课程关卡，6道题为一关(组)
     和api组确认关卡为一个CourseSection,level为3
@@ -341,8 +346,9 @@ class MissonGroup(CourseSectionBase):
     level = 3
 
     def __init__(self, **kwargs):
-        super(MissonGroup, self).__init__(**kwargs)
+        super(Misson, self).__init__(**kwargs)
         self.set_misson_name()
+        self.questions = []
 
     def set_misson_name(self):
         """设置关卡名称"""
@@ -351,5 +357,24 @@ class MissonGroup(CourseSectionBase):
         self.name = '第{}关'.format(self.order_num)
 
     def insert_relate_section_question(self):
+        if not self.id:
+            raise MyLocalException('关卡没有id')
+        course_section_id = self.id
         """将关卡id和questions的id写入关联表"""
-        pass
+        for q in self.questions:
+            if not q:
+                raise MyLocalException('Question为空')
+            if not q.id:
+                raise MyLocalException('Question没有id')
+            fields = dict(
+                CourseSectionID=course_section_id,
+                QuestionID=q.id,
+                TeachingAssistID=self.assist_id
+            )
+            sql = """
+            INSERT INTO edu_relate_courseassistquestion (CourseSectionID,QuestionID,TeachingAssistID)
+            VALUES ({CourseSectionID},{QuestionID},{TeachingAssistID})
+            """.format(**fields)
+            self.id = self.insert(sql, auto_commit=False)
+            log.info('Insert new relate 关卡（{},{}）,题目（{},{}）'.format(course_section_id, self.name, q.id, q.body))
+        self.conn.commit()
