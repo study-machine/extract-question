@@ -1,6 +1,5 @@
 # coding=utf8
 from utils import *
-from datetime import datetime
 from model.base_model import *
 
 
@@ -306,8 +305,16 @@ class Question(BaseModel):
     body = ''
     q_type = ''
 
+    def __eq__(self, other):
+        if isinstance(other, Question):
+            return self.id == other.id
+
+    def __hash__(self):
+        return hash(self.id)
+
     def __repr__(self):
-        return '<id:{},body:{},q_type:{}>'.format(self.id, self.body, self.q_type)
+        # return '<id:{},body:{},q_type:{}>'.format(self.id, self.body, self.q_type)
+        return '<id:{},q_type:{}>'.format(self.id, self.q_type)
 
     @classmethod
     def get_question_by_item(cls, i_id):

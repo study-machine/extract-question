@@ -29,8 +29,8 @@ DB_NAME = TestDB
 
 log.basicConfig(
     level=log.DEBUG,
-    # format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
-    format='%(levelname)s %(message)s',
+    format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
+    # format='%(levelname)s %(message)s',
     datefmt='%y-%m-%d %H:%M:%S',
     filename='question.log',
     filemode='w')
@@ -54,9 +54,15 @@ def fix_six_times(c_qs, b_qs):
     """不足6的倍数，备选题补全"""
     n = len(c_qs) % 6
     if n != 0:
+        if len(b_qs) < 6 - n:
+            # 被选题数量并不足以补全
+            c_qs = c_qs[:n * 6]
+            return
         for i in xrange(6 - n):
             # 随机从备选题中补足6的倍数
-            c_qs.append(pop_random_question(b_qs))
+            q = pop_random_question(b_qs)
+            if q:
+                c_qs.append(q)
 
 
 def pop_random_question_by_type(qs, q_type):
@@ -106,3 +112,10 @@ def get_question_type(id):
     """根据CategoryItemID获取CategoryID为1的题型"""
     q_type = QUESTION_TYPE.get(int(id), '')
     return q_type
+
+
+def check_qs_none(qs):
+    for q in qs:
+        if q is None:
+            return False
+    return True

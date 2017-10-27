@@ -21,7 +21,7 @@ def get_jiaocais(version):
     if not jiaocais:
         log.warning('版本:%s无可用教材' % version.name)
         return
-    for j in jiaocais[1:]:
+    for j in jiaocais:
         get_basic_assist(j, version)
 
 
@@ -76,22 +76,24 @@ def get_danyuan(ce, new_ce):
             name='第{}单元'.format(i + 1),
             summary='语文同步练',
             parent_id=new_ce.id,
+            parent_section=new_ce,
             order_num=i + 1,
             assist_id=new_ce.assist_id,
             jiaocai_id=new_ce.jiaocai_id,
             grade=new_ce.grade,
-            subject=1
+            subject=1,
         )
         new_danyuan.insert_new_section()
         log.info('Insert new 单元id:{},name:{}'.format(new_danyuan.id, new_danyuan.name))
 
         for m in mg.missions:
-            m.insert_new_section()
             m.parent_id = new_danyuan.id
+            m.parent_section = new_danyuan
             m.assist_id = new_ce.assist_id
             m.jiaocai_id = new_ce.jiaocai_id
             m.grade = new_ce.grade
             m.subject = 1
+            m.insert_new_section()
             log.info('Insert new 关卡id:{},name:{}'.format(m.id, m.name))
             m.insert_relate_section_question()
             print m
@@ -122,7 +124,7 @@ class MissionGroupGenerator(object):
                 log.info('%s has %s' % (course.name, practice.name))
 
                 # 找到确定添加的题
-                qe = QuestionsExtractor(practice.id, practice.name, course)
+                qe = QuestionsExtractor(practice, course)
                 confirm_questions = qe.confirm_qs
                 # 一个课程的汉字或词语题目数量
                 n = len(confirm_questions)
@@ -145,9 +147,8 @@ class MissionGroupGenerator(object):
 
 
 class QuestionsExtractor(object):
-    def __init__(self, practice_id, practice_name, course):
-        self.practice_id = practice_id
-        self.practice_name = practice_name
+    def __init__(self, practice, course):
+        self.practice = practice
         self.course = course
         self.confirm_qs = []
 
@@ -158,21 +159,22 @@ class QuestionsExtractor(object):
 
     def get_item(self):
         """获取CategoryItem1 这里选字词练习和词汇"""
-        items = CategoryItem.get_categoryitem_by_coursesection(self.practice_id)
+        items = CategoryItem.get_categoryitem_by_coursesection(self.practice.id)
         # 如果一个课程的字或词数量过多，取题逻辑微调
         if len(items) > 20:
             self.too_many = True
             self.r = randint(0, 1)
 
-        if self.practice_name == '字词练习':
+        if self.practice.name == '字词练习':
             log.debug('%s,开始抽取汉字问题' % self.course.name)
             c_qs, b_qs = self.extract_hanzi_question(items)
+
             # 汉字题需要排序
             c_qs = sort_hanzi_question(c_qs)
             # 如果不是6的倍数补全
             fix_six_times(c_qs, b_qs)
 
-        elif self.practice_name == '词汇':
+        elif self.practice.name == '词汇':
             log.debug('%s,开始抽取的词语问题' % self.course.name)
             c_qs, b_qs = self.extract_ciyu_question(items)
             # 如果不是6的倍数补全
@@ -180,19 +182,9 @@ class QuestionsExtractor(object):
             # 打乱词语题的排序
             shuffle(c_qs)
         # 返回确定的题组
+        if None in c_qs:
+            raise MyLocalException('题目有空值')
         self.confirm_qs = c_qs
-
-    def extract_questions(self, items, type):
-        """抽题"""
-        confirm_questions = []  # 必须题
-        back_questions = []  # 备选题
-
-        for item in items:
-            if type == 1:
-                q = self.extract_hanzi_question(item)
-            elif type == 2:
-                q = self.extract_ciyu_question(item)
-        confirm_questions.append(q)
 
     def extract_hanzi_question(self, items):
         """抽汉字题"""
@@ -203,7 +195,7 @@ class QuestionsExtractor(object):
             # 会写字逻辑
             if item.group == '会写':
                 need_fix = 0  # 必须题补充数
-                log.debug('<会写字>：%s' % item.name)
+                log.debug('<会写字>：{},{}'.format(item.id, item.name))
                 # 字音题1道
                 if not self.extract_confirm_questions(qs, '字音', confirm_questions, item.name):
                     if not self.too_many:
@@ -227,12 +219,12 @@ class QuestionsExtractor(object):
                             log.debug('%s 随机补充必选题 %s' % (item.name, q))
             # 会认字逻辑
             elif item.group == '会认':
-                log.debug('<会认字>：%s' % item.name)
+                log.debug('<会认字>：{},{}'.format(item.id, item.name))
                 # 字音题1道
                 if not self.extract_confirm_questions(qs, '字音', confirm_questions, item.name):
                     log.debug('%s no 字音题，不补充了' % item.name)
             # 被抽到之外机抽1道题，分组时备选
-            back_questions += self.extract_back_questions(qs, confirm_questions, 1)
+            back_questions += self.extract_back_questions(qs, confirm_questions, 5)
 
         confirm_questions = list(set(confirm_questions))
         # 被选题不能和必选题冲突
@@ -255,15 +247,17 @@ class QuestionsExtractor(object):
             else:
                 log.debug('%s has no 反义词题' % item.name)
             # 被抽到之外机抽1道题，分组时备选
-            back_questions += self.extract_back_questions(qs, confirm_questions, 1)
+            back_questions += self.extract_back_questions(qs, confirm_questions, 5)
         confirm_questions = list(set(confirm_questions))
         back_questions = list(set(back_questions) - set(confirm_questions))
+        if not check_qs_none(confirm_questions):
+            raise MyLocalException('题目有空值')
         return confirm_questions, back_questions
 
     def extract_confirm_questions(self, qs, q_type, confirm_qs, i_name=''):
         """根据类型抽取必选题"""
         q = pop_random_question_by_type(qs, q_type)
-        if not q:
+        if not q or q.id in {q.id for q in confirm_qs}:
             log.debug('%s no %s题型' % (i_name, q_type))
             return False
         confirm_qs.append(q)
@@ -276,8 +270,10 @@ class QuestionsExtractor(object):
         left_qs = list(set(qs) - set(confirm_qs))
         for x in xrange(min(n, len(qs))):
             q = pop_random_question(left_qs)
+            if not q:
+                return []
             if q.id in {q.id for q in confirm_qs}:
-                raise MyLocalException('题目重复')
+                continue
             b_qs.append(q)
             log.debug('添加备选题%s' % q)
         return b_qs

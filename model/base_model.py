@@ -3,10 +3,14 @@ import pymysql
 from utils import MyLocalException
 
 config = {
-    'host': 'test.wangxiyang.com',
+    # 'host': 'test.wangxiyang.com',
+    'host': '10.10.228.163',
     'user': 'root',
-    'password': 'asd123',
+    'port': 3301,
+    # 'password': 'asd123',
+    'password': 'OnlyKf!@#',
     'db': 'tiku',
+    # 'db': 'tiku-dev',
     'charset': 'utf8mb4',
     'cursorclass': pymysql.cursors.DictCursor,
 }
@@ -40,4 +44,3 @@ class BaseModel(object):
     @classmethod
     def commit(cls):
         cls.conn.commit()
-
