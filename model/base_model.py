@@ -6,7 +6,7 @@ config = {
     # 'host': 'test.wangxiyang.com',
     'host': '10.10.228.163',
     # 'user': 'root',
-    'user': 'root',
+    'user': 'test',
     'port': 3301,
     # 'password': 'asd123',
     'password': 'OnlyKf!@#',
