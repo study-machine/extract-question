@@ -1,21 +1,12 @@
 # coding=utf-8
 import pymysql
+from config import *
 from utils import MyLocalException
 
-config = {
-    # 'host': 'test.wangxiyang.com',
-    'host': '10.10.228.163',
-    # 'user': 'root',
-    'user': 'test',
-    'port': 3301,
-    # 'password': 'asd123',
-    'password': 'OnlyKf!@#',
-    'db': 'tiku',
-    # 'db': 'tiku-dev',
-    'charset': 'utf8mb4',
-    'cursorclass': pymysql.cursors.DictCursor,
-}
+config = DatabaseConfig.local_db
 
+
+# config = DatabaseConfig.dev_db
 
 class BaseModel(object):
     conn = pymysql.connect(**config)

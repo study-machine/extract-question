@@ -3,12 +3,28 @@ from random import shuffle
 from model.tiku_model import *
 from utils import *
 
+# 版本、册、年级的限定
+# key为上线版本ID，value为15为一年级上下册，二年级上；30为二年级下册，三年级上下册
+LIMIT_VERSIONS = {
+    1: 15,  # 人教版
+    100: 15,  # 苏教版
+    75: 15,  # 北师大版
+    10449: 30,  # 人教(新版)
+    10450: 30,  # 苏教(新版)
+    10453: 30,  # 北师大(新版)
+}
+
 
 def get_all_versions():
-    log.info('获取所有版本')
+    log.info('开始')
     all_versions = JiaoCaiVersion.get_all_version()
-    log.info(all_versions)
-    for v in all_versions:
+
+    # 限定的版本
+    target_versions = {k for k in LIMIT_VERSIONS.keys()}
+    versions = [v for v in all_versions if v.id in target_versions]
+    log.info('处理的版本:{}'.format(versions))
+
+    for v in versions:
         log.info('开始获取版本：%s的教材' % v.name)
         get_jiaocais(v)
 
@@ -18,9 +34,17 @@ def get_jiaocais(version):
     version.get_jiaocai()
     jiaocais = version.jiaocais
     log.info(jiaocais)
+
+    # 限定年级
+    if LIMIT_VERSIONS.get(version.id, 0) == 15:
+        jiaocais = [j for j in jiaocais if j.grade in [1, 2]]
+    elif LIMIT_VERSIONS.get(version.id, 0) == 30:
+        jiaocais = [j for j in jiaocais if j.grade in [2, 3]]
+    log.info('获得的教材:{}'.format(jiaocais))
     if not jiaocais:
-        log.warning('版本:%s无可用教材' % version.name)
+        log.error('版本:%s无可用教材' % version.name)
         return
+
     for j in jiaocais:
         get_basic_assist(j, version)
 
@@ -28,6 +52,9 @@ def get_jiaocais(version):
 def get_basic_assist(jiaocai, version):
     # 基础教辅
     basic_assists = jiaocai.get_relate_assist()
+    if not basic_assists:
+        log.error('教材:{}无可用教辅'.format(jiaocai.name))
+        return
 
     # 创建新教辅
     new_assist = JiaocaiAssist(
@@ -41,27 +68,34 @@ def get_basic_assist(jiaocai, version):
     new_assist.insert_new_assist()
     log.info('Insert new 教辅id:{},name:{}'.format(new_assist.id, new_assist.name))
 
-    get_ce(basic_assists[0], new_assist)
+    get_ce(basic_assists[0], new_assist, jiaocai)
 
 
-def get_ce(assist, new_assist):
+def get_ce(assist, new_assist, jiaocai):
     # 基础册，上册
-    basic_ce = assist.get_relate_ce()[0]
+    basic_ces = assist.get_relate_ce()
 
-    new_ce = SectionCe(
-        name='{}-上册'.format(new_assist.name),
-        summary='{}-上册'.format(new_assist.name),
-        parent_id=0,
-        order_num=1,
-        assist_id=new_assist.id,
-        jiaocai_id=new_assist.jiaocai_id,
-        grade=new_assist.grade,
-        subject=1
-    )
-    new_ce.insert_new_section()
-    log.info('Insert new 册id:{},name:{}'.format(new_ce.id, new_ce.name))
+    # 根据限定，新版教材二年级只要上册,旧版教材二年级只要下册
+    if LIMIT_VERSIONS.get(jiaocai.id, 0) == 15 and jiaocai.grade == 2:
+        basic_ces = [c for c in basic_ces if c.order_num == 1]
+    if LIMIT_VERSIONS.get(jiaocai.id, 0) == 15 and jiaocai.grade == 2:
+        basic_ces = [c for c in basic_ces if c.order_num == 2]
 
-    get_danyuan(basic_ce, new_ce)
+    for basic_ce in basic_ces:
+        new_ce = SectionCe(
+            name='{}-上册'.format(new_assist.name),
+            summary='{}-上册'.format(new_assist.name),
+            parent_id=0,
+            order_num=1,
+            assist_id=new_assist.id,
+            jiaocai_id=new_assist.jiaocai_id,
+            grade=new_assist.grade,
+            subject=1
+        )
+        new_ce.insert_new_section()
+        log.info('Insert new 册id:{},name:{}'.format(new_ce.id, new_ce.name))
+
+        get_danyuan(basic_ce, new_ce)
 
 
 def get_danyuan(ce, new_ce):
@@ -136,7 +170,7 @@ class MissionGroupGenerator(object):
                 for i in xrange(n / 6):
                     # 创建Misson
                     mission = Misson(
-                        summary=practice.name,
+                        summary=course.name,
                         order_num=self.mission_order
                     )
                     self.mission_order += 1

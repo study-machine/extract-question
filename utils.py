@@ -3,36 +3,11 @@ from datetime import datetime
 from random import randint
 import logging as log
 
-
-class TestDB:
-    """测试库表名"""
-    # 版本表
-    T_VERSION = 'wx_edu_teachingmaterial'
-    # 教材表
-    T_JIAOCAI = 'wx_edu_jiaocai'
-    # 教辅表
-    T_ASSIST = 'wx_edu_teachingassist'
-    # 章节表
-    T_SECTION = 'wx_edu_coursesection'
-    # CategoryItem表
-    T_ITEM = 'edu_categoryitem'
-    # 题目表
-    T_QUESTION = 'wx_edu_questions_new'
-    # 章节和Item关联表
-    R_SECTION_ITEM = 'edu_relate_coursesectioncategory'
-    # 题目和Item关联表
-    R_QUESTION_ITEM = 'edu_relate_questioncategory'
-
-
-# 使用测试库名称
-DB_NAME = TestDB
-
 log.basicConfig(
     level=log.DEBUG,
     format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
-    # format='%(levelname)s %(message)s',
     datefmt='%y-%m-%d %H:%M:%S',
-    filename='question.log',
+    filename='log/question.log',
     filemode='w')
 
 

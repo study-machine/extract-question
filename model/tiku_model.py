@@ -111,29 +111,49 @@ class JiaoCaiVersion(BaseModel):
             for d in res
         ]
 
+    @classmethod
+    def get_version(cls, id=0, name='QQQ'):
+        sql = """
+        SELECT TeachingID,Name FROM wx_edu_teachingmaterial
+        WHERE TeachingID={} or NAME='{}';
+        """.format(id, name)
+        res = cls.select(sql)
+        vs = [
+            cls(
+                id=int(d['TeachingID']),
+                name=uni_to_u8(d['Name'])
+            )
+            for d in res
+        ]
+        if not vs or len(vs) > 1:
+            raise MyLocalException('教材id或name输入错误')
+        return vs[0]
+
 
 class JiaoCai(BaseModel):
     """教材，含年级和分科信息"""
 
     id = 0
+    name = 0
     grade = 0
     subject = 1
 
     def __repr__(self):
-        return '<id:{},grade:{}>'.format(self.id, self.grade)
+        return '<{}{}{}年级>'.format(self.id, self.name, self.grade)
 
     @classmethod
     def get_jiaocai_by_version(cls, v_id):
         """获取一个出版社的教材，默认语文"""
         # IsActive 为可用教材
         sql = """
-        SELECT JiaoCaiID,Grade,Subject FROM wx_edu_jiaocai 
+        SELECT JiaoCaiID,Name,Grade,Subject FROM wx_edu_jiaocai 
         where IsActive=1 and TeachingID={} and subject=1;
         """.format(v_id)
         res = cls.select(sql)
         return [
             cls(
                 id=int(d['JiaoCaiID']),
+                name=uni_to_u8(d['Name']),
                 grade=int(d['Grade'])
             ) for d in res
         ]
