@@ -21,12 +21,13 @@ class CourseSectionBase(BaseModel):
 
     def __init__(self, **kwargs):
         super(CourseSectionBase, self).__init__(**kwargs)
-        self.section_order = self._cal_section_order()
+        self.section_order = 0
 
     def __repr__(self):
         return '<id:{},name:{},summary:{},order:{}>'.format(self.id, self.name, self.summary, self.order_num)
 
     def insert_new_section(self):
+        self.section_order = self._cal_section_order()
         fields = dict(
             SectionName=self.name,
             Summary=self.summary,

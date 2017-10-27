@@ -5,6 +5,7 @@ from utils import MyLocalException
 config = {
     # 'host': 'test.wangxiyang.com',
     'host': '10.10.228.163',
+    # 'user': 'root',
     'user': 'root',
     'port': 3301,
     # 'password': 'asd123',
