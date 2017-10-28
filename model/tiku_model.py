@@ -4,6 +4,8 @@ from model.base_model import *
 
 
 class CourseSectionBase(BaseModel):
+    table_name = ('wx_edu_coursection',)
+
     id = 0  # SectionID
     name = ''  # SectionName
     summary = ''
@@ -405,4 +407,4 @@ class Misson(CourseSectionBase):
             """.format(**fields)
             self.id = self.insert(sql, auto_commit=False)
             log.info('Insert new relate 关卡（{},{}）,题目（{},{}）'.format(course_section_id, self.name, q.id, q.body))
-        self.conn.commit()
+        self.conn_read.commit()
