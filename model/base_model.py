@@ -3,10 +3,6 @@ import pymysql
 from config import *
 from utils import MyLocalException
 
-db_config_read = DatabaseConfig.local_db
-# db_config_write = DatabaseConfig.dev_susuan_db
-db_config_write = DatabaseConfig.local_db
-
 
 class BaseModel(object):
     # 读库的连接

@@ -47,7 +47,6 @@ def get_jiaocais(version):
     if not jiaocais:
         log.error('版本:%s无可用教材' % version.name)
         return
-
     for j in jiaocais:
         get_basic_assist(j, version)
 
