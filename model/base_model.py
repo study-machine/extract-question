@@ -5,10 +5,8 @@ from utils import MyLocalException
 
 db_config_read = DatabaseConfig.local_db
 # db_config_write = DatabaseConfig.dev_susuan_db
-db_config_write=DatabaseConfig.local_db
+db_config_write = DatabaseConfig.local_db
 
-# class Field(object):
-#
 
 class BaseModel(object):
     # 读库的连接
@@ -44,4 +42,4 @@ class BaseModel(object):
 
     @classmethod
     def commit(cls):
-        cls.conn_read.commit()
+        cls.conn_write.commit()

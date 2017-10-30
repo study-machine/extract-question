@@ -1,6 +1,7 @@
 # coding=utf8
 from utils import *
 from model.base_model import *
+from model.base_field import *
 
 
 class CourseSectionBase(BaseModel):
@@ -87,9 +88,12 @@ class CourseSectionBase(BaseModel):
 
 class JiaoCaiVersion(BaseModel):
     """教材版本"""
-    id = 0
-    name = ''
-    jiaocais = []
+
+    def __init__(self, **kwargs):
+        self.id = IntegerField()
+        self.name = StringField()
+        self.jiaocais = []
+        super(JiaoCaiVersion, self).__init__(**kwargs)
 
     def __repr__(self):
         return '<id:{},name:{}>'.format(self.id, self.name)
@@ -135,10 +139,12 @@ class JiaoCaiVersion(BaseModel):
 class JiaoCai(BaseModel):
     """教材，含年级和分科信息"""
 
-    id = 0
-    name = 0
-    grade = 0
-    subject = 1
+    def __init__(self, **kwargs):
+        self.id = IntegerField()
+        self.name = StringField()
+        self.grade = IntegerField()
+        self.subject = IntegerField(default=1)
+        super(JiaoCai, self).__init__(**kwargs)
 
     def __repr__(self):
         return '<{}{}{}年级>'.format(self.id, self.name, self.grade)
@@ -217,7 +223,6 @@ class JiaocaiAssist(BaseModel):
 class SectionCe(CourseSectionBase):
     """
     册
-    这次需求只要上册的内容，所以OrderNum=1
     """
     level = 1
 
@@ -231,7 +236,6 @@ class SectionCe(CourseSectionBase):
         SectionOrder,TeachingAssistID,Grade,Subject,QuestionType FROM wx_edu_coursesection
         WHERE TeachingAssistID={}
         AND sLevel=1 
-        AND OrderNum=1
         """.format(a_id)
         res = cls.select(sql)
         return [

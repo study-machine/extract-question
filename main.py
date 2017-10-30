@@ -4,7 +4,7 @@ from model.tiku_model import *
 from utils import *
 
 # 版本、册、年级的限定
-# key为上线版本ID，value为15为一年级上下册，二年级上；30为二年级下册，三年级上下册
+# key为上线版本ID，value为15为一年级上下册，二年级上；True,False是否新版
 LIMIT_VERSIONS = {
     1: 15,  # 人教版
     100: 15,  # 苏教版
@@ -22,6 +22,9 @@ def get_all_versions():
     # 限定的版本
     target_versions = {k for k in LIMIT_VERSIONS.keys()}
     versions = [v for v in all_versions if v.id in target_versions]
+    if not versions:
+        log.error('没有找到限定要求版本的')
+        return
     log.info('处理的版本:{}'.format(versions))
 
     for v in versions:
@@ -37,9 +40,9 @@ def get_jiaocais(version):
 
     # 限定年级
     if LIMIT_VERSIONS.get(version.id, 0) == 15:
-        jiaocais = [j for j in jiaocais if j.grade in [1, 2]]
+        jiaocais = [j for j in jiaocais if j.grade in [2, 3]]   # 旧版教材以三年级上下，二年级只要下册
     elif LIMIT_VERSIONS.get(version.id, 0) == 30:
-        jiaocais = [j for j in jiaocais if j.grade in [2, 3]]
+        jiaocais = [j for j in jiaocais if j.grade in [1, 2]]   # 新版教材以一年级上下，二年级只要上册
     log.info('获得的教材:{}'.format(jiaocais))
     if not jiaocais:
         log.error('版本:%s无可用教材' % version.name)
@@ -75,16 +78,15 @@ def get_ce(assist, new_assist, jiaocai):
     # 基础册，上册
     basic_ces = assist.get_relate_ce()
 
-    # 根据限定，新版教材二年级只要上册,旧版教材二年级只要下册
-    if LIMIT_VERSIONS.get(jiaocai.id, 0) == 15 and jiaocai.grade == 2:
+    if LIMIT_VERSIONS.get(jiaocai.id, 0) == 30 and jiaocai.grade == 2:  # 新版教材二年级只要上册
         basic_ces = [c for c in basic_ces if c.order_num == 1]
-    if LIMIT_VERSIONS.get(jiaocai.id, 0) == 15 and jiaocai.grade == 2:
+    if LIMIT_VERSIONS.get(jiaocai.id, 0) == 15 and jiaocai.grade == 2:  # 旧版教材二年级只要下册
         basic_ces = [c for c in basic_ces if c.order_num == 2]
 
     for basic_ce in basic_ces:
         new_ce = SectionCe(
-            name='{}-上册'.format(new_assist.name),
-            summary='{}-上册'.format(new_assist.name),
+            name=basic_ce.name,
+            summary=basic_ce.summary,
             parent_id=0,
             order_num=1,
             assist_id=new_assist.id,
