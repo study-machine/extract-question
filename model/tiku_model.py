@@ -230,13 +230,13 @@ class SectionCe(CourseSectionBase):
         super(SectionCe, self).__init__(**kwargs)
 
     @classmethod
-    def get_ce_by_assist_id(cls, a_id):
+    def get_ce_by_assist_id(cls, assist_id):
         sql = """
         SELECT CourseSectionID,SectionName,Summary,sLevel,ParentID,OrderNum,JiaoCaiID,
         SectionOrder,TeachingAssistID,Grade,Subject,QuestionType FROM wx_edu_coursesection
         WHERE TeachingAssistID={}
         AND sLevel=1 
-        """.format(a_id)
+        """.format(assist_id)
         res = cls.select(sql)
         return [
             cls(
@@ -244,8 +244,8 @@ class SectionCe(CourseSectionBase):
                 name=uni_to_u8(d['SectionName']),
                 summary=uni_to_u8(d['Summary']),
                 parent_id=0,
-                order_num=1,
-                assist_id=a_id,
+                order_num=int(d['OrderNum']),
+                assist_id=uni_to_u8(d['TeachingAssistID']),
             ) for d in res
         ]
 
