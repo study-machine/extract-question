@@ -40,9 +40,9 @@ def get_jiaocais(version):
 
     # 限定年级
     if LIMIT_VERSIONS.get(version.id, 0) == 15:
-        jiaocais = [j for j in jiaocais if j.grade in [2, 3]]   # 旧版教材以三年级上下，二年级只要下册
+        jiaocais = [j for j in jiaocais if j.grade in [2, 3]]  # 旧版教材以三年级上下，二年级只要下册
     elif LIMIT_VERSIONS.get(version.id, 0) == 30:
-        jiaocais = [j for j in jiaocais if j.grade in [1, 2]]   # 新版教材以一年级上下，二年级只要上册
+        jiaocais = [j for j in jiaocais if j.grade in [1, 2]]  # 新版教材以一年级上下，二年级只要上册
     log.info('获得的教材:{}'.format(jiaocais))
     if not jiaocais:
         log.error('版本:%s无可用教材' % version.name)
@@ -77,9 +77,9 @@ def get_ce(assist, new_assist, jiaocai):
     # 基础册，上册
     basic_ces = assist.get_relate_ce()
 
-    if LIMIT_VERSIONS.get(jiaocai.id, 0) == 30 and jiaocai.grade == 2:  # 新版教材二年级只要上册
+    if LIMIT_VERSIONS.get(jiaocai.v_id, 0) == 30 and jiaocai.grade == 2:  # 新版教材二年级只要上册
         basic_ces = [c for c in basic_ces if c.order_num == 1]
-    if LIMIT_VERSIONS.get(jiaocai.id, 0) == 15 and jiaocai.grade == 2:  # 旧版教材二年级只要下册
+    if LIMIT_VERSIONS.get(jiaocai.v_id, 0) == 15 and jiaocai.grade == 2:  # 旧版教材二年级只要下册
         basic_ces = [c for c in basic_ces if c.order_num == 2]
 
     for basic_ce in basic_ces:
@@ -87,8 +87,8 @@ def get_ce(assist, new_assist, jiaocai):
             name=basic_ce.name,
             summary=basic_ce.summary,
             parent_id=0,
-            order_num=1,
-            assist_id=new_assist.id,
+            order_num=basic_ce.order_num,  # 上下册参照basic_ce
+            assist_id=new_assist.id,  # 新册属于新教辅
             jiaocai_id=new_assist.jiaocai_id,
             grade=new_assist.grade,
             subject=1

@@ -5,8 +5,6 @@ from model.base_field import *
 
 
 class CourseSectionBase(BaseModel):
-    table_name = ('wx_edu_coursection',)
-
     id = 0  # SectionID
     name = ''  # SectionName
     summary = ''
@@ -144,6 +142,7 @@ class JiaoCai(BaseModel):
         self.name = StringField()
         self.grade = IntegerField()
         self.subject = IntegerField(default=1)
+        self.v_id = IntegerField()
         super(JiaoCai, self).__init__(**kwargs)
 
     def __repr__(self):
@@ -162,7 +161,8 @@ class JiaoCai(BaseModel):
             cls(
                 id=int(d['JiaoCaiID']),
                 name=uni_to_u8(d['Name']),
-                grade=int(d['Grade'])
+                grade=int(d['Grade']),
+                v_id=v_id,
             ) for d in res
         ]
 
