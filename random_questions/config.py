@@ -23,6 +23,16 @@ class DatabaseConfig(object):
         'cursorclass': pymysql.cursors.DictCursor,
     }
 
+    QA_db = {
+        'host': '10.9.35.226',
+        'user': 'test',
+        'port': 3329,
+        'password': 'qaOnly!@#',
+        'db': 'tiku',
+        'charset': 'utf8mb4',
+        'cursorclass': pymysql.cursors.DictCursor,
+    }
+
     # 本地开发速算盒子总库
     dev_susuan_db = {
         'host': 'test.wangxiyang.com',
@@ -37,8 +47,11 @@ class DatabaseConfig(object):
 
 # db_config_read = DatabaseConfig.dev_db
 # db_config_write = DatabaseConfig.dev_db
-db_config_read = DatabaseConfig.local_db
-db_config_write = DatabaseConfig.local_db
+# db_config_read = DatabaseConfig.local_db
+# db_config_write = DatabaseConfig.local_db
+
+db_config_read = DatabaseConfig.QA_db
+db_config_write = DatabaseConfig.QA_db
 
 
 class DevDB(object):
