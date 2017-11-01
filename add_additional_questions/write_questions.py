@@ -55,7 +55,7 @@ def check_no_or_too_many(l, name1, name2):
 class ParsedRawQuestion(object):
     def __init__(self, raw_question):
         self.raw_question = raw_question
-        self.mission = raw_question['mission']
+        self.mission_num = raw_question['mission']
         self.danyuan_num = raw_question['danyuan']
         self.grade = raw_question['grade']
         self.version_name = raw_question['version_name']
@@ -85,6 +85,8 @@ class ParsedRawQuestion(object):
         self.get_danyuan()
         if not self.danyuan:
             return
+
+        self.cal_mission_order_num()
 
         # 题目和选项
         self.right_option = raw_question['right_option']
@@ -162,21 +164,21 @@ class ParsedRawQuestion(object):
             self.danyuan = danyuans[0]
             log.debug('获取到题目所属单元{}'.format(self.danyuan))
 
+    def cal_mission_order_num(self):
+        """关卡的序号放在这里计算"""
+        if not self.danyuan:
+            raise MyLocalException('没有单元，没法计算序号')
+        missions = Misson.get_missions_by_ce(
+            a_id=self.assist.id,
+            q_type=24,
+            p_id=self.danyuan.id
+        )
+        self.mission_order_num = missions[-1].order_num + self.mission_num
 
-def new_mission_num(a_id, d_id):
-    """获取新的mission序号"""
-    missions = Misson.get_missions_by_ce(
-        a_id=a_id,
-        q_type=24,
-        p_id=d_id
-    )
-    return missions[-1].order_num + 1
 
-
-if __name__ == '__main__':
+def start():
     log.info('开始')
     raw_qs = raw_questions_generator()
-
     # 新的关卡
     new_mission = None
     for i, rq in enumerate(raw_qs):
@@ -190,10 +192,9 @@ if __name__ == '__main__':
             continue
         # 每六道题一个关卡
         if i % 6 == 0:
-            new_mission_num = new_mission_num(pq.assist.id, pq.danyuan.id)
             new_mission = Misson(
                 summary=pq.summary,
-                order_num=new_mission_num,
+                order_num=pq.mission_order_num,
                 parent_id=pq.danyuan.id,
                 jiaocai_id=pq.jiaocai.id,
                 assist_id=pq.assist.id,
@@ -203,4 +204,5 @@ if __name__ == '__main__':
             )
             new_mission.insert_new_section()
         pq.question.insert_relate_with_mission(section_id=new_mission.id, a_id=pq.assist.id)
+        print 'insert relate for 题目:{},关卡{}'.format(pq.question.id, new_mission.id)
     log.info('结束')

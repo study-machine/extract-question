@@ -358,7 +358,7 @@ class Misson(CourseSectionBase):
             INSERT INTO edu_relate_courseassistquestion (CourseSectionID,QuestionID,TeachingAssistID)
             VALUES ({CourseSectionID},{QuestionID},{TeachingAssistID})
             """.format(**fields)
-            self.id = self.insert(sql, auto_commit=False)
+            self.insert(sql, auto_commit=False)
             log.info('Insert new relate 关卡（{},{}）,题目（{},{}）'.format(course_section_id, self.name, q.id, q.body))
         self.conn_read.commit()
 
@@ -520,7 +520,7 @@ class QuestionRadio(BaseModel):
         INSERT INTO edu_relate_courseassistquestion (CourseSectionID,QuestionID,TeachingAssistID)
         VALUES ({CourseSectionID},{QuestionID},{TeachingAssistID})
         """.format(**fields)
-        self.id = self.insert(sql)
+        self.insert(sql)
         log.info('Insert new relate 关卡:{},题目:{}'.format(section_id, self.id))
 
 
