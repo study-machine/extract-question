@@ -1,7 +1,7 @@
 # coding=utf8
 import re
 from random import shuffle
-from model.tiku_model import *
+from tiku_orm.tiku_model import *
 from utils import *
 
 # 版本、册、年级的限定

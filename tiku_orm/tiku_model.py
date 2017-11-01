@@ -1,6 +1,6 @@
 # coding=utf8
-from model.base_field import *
-from model.base_model import *
+from tiku_orm.base_field import *
+from tiku_orm.base_model import *
 from random_questions.utils import *
 
 

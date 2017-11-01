@@ -1,6 +1,6 @@
 # coding=utf-8
 import pymysql
-from model.tiku_model import QuestionRadio, QuestionItem, JiaoCaiVersion, JiaoCai, JiaocaiAssist, CourseSectionBase, \
+from tiku_orm.tiku_model import QuestionRadio, QuestionItem, JiaoCaiVersion, JiaoCai, JiaocaiAssist, CourseSectionBase, \
     Misson
 from random_questions.utils import uni_to_u8
 from random_questions.utils import log, MyLocalException
