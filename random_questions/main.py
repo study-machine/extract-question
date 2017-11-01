@@ -1,27 +1,66 @@
 # coding=utf8
+import re
 from random import shuffle
 from model.tiku_model import *
 from utils import *
 
 # 版本、册、年级的限定
-# key为上线版本ID，value为15为一年级上下册，二年级上；True,False是否新版
+OneTwoThree = {1, 2, 3}
+OneTwo = {1, 2}
+OneThree = {1, 3}
+Two = {2}
+Three = {3}
 LIMIT_VERSIONS = {
-    1: 15,  # 人教版
-    100: 15,  # 苏教版
-    75: 15,  # 北师大版
-    10449: 30,  # 人教(新版)
-    10450: 30,  # 苏教(新版)
-    10453: 30,  # 北师大(新版)
+    # 5个版本一二三年级上册
+    '语文A版': OneTwoThree,
+    '沪教版': OneTwoThree,
+    '教科版': OneTwoThree,
+    '鲁教版': OneTwoThree,
+    '西师大版': OneTwoThree,
+
+    # 5组版本
+    # 旧版三年级上册
+    '人教版': Three,
+    '苏教版': Three,
+    '北师大版': Three,
+    '语文S版': Three,
+    '北京版': Three,
+    # 新版一二年级上册
+    '人教新版（部编版）': OneTwo,
+    '苏教版（新版）': OneTwo,
+    '北师大版（新版）': OneTwo,
+    '北京版（新版）': OneTwo,
+    '语文S版（新版）': OneTwo,
+
+    # 特殊
+    '长春版': OneThree,
+    '长春版（新版）': Two,
 }
+
+# 要被筛掉的课程名称
+ChineseGardenFilter = [
+    '语文园地',
+    '练习',
+    '语文活动',
+    '语文天地',
+    '百花园',
+    '语文乐园',
+    '语文快乐宫',
+    '语文欢乐宫',
+    '综合练习',
+    '学习园地',
+    '口语交际',
+    '语文七色光',
+    '积累与运用'
+]
 
 
 def get_all_versions():
-    log.info('开始')
     all_versions = JiaoCaiVersion.get_all_version()
 
     # 限定的版本
     target_versions = {k for k in LIMIT_VERSIONS.keys()}
-    versions = [v for v in all_versions if v.id in target_versions]
+    versions = [v for v in all_versions if v.name in target_versions]
     if not versions:
         log.error('没有找到限定要求版本的')
         return
@@ -38,11 +77,12 @@ def get_jiaocais(version):
     jiaocais = version.jiaocais
     log.info(jiaocais)
 
-    # 限定年级
-    if LIMIT_VERSIONS.get(version.id, 0) == 15:
-        jiaocais = [j for j in jiaocais if j.grade in [2, 3]]  # 旧版教材以三年级上下，二年级只要下册
-    elif LIMIT_VERSIONS.get(version.id, 0) == 30:
-        jiaocais = [j for j in jiaocais if j.grade in [1, 2]]  # 新版教材以一年级上下，二年级只要上册
+    # 根据版本的限定年级
+    jiaocais = [
+        j for j in jiaocais
+        if j.grade in LIMIT_VERSIONS.get(version.name, set())
+    ]
+
     log.info('获得的教材:{}'.format(jiaocais))
     if not jiaocais:
         log.error('版本:%s无可用教材' % version.name)
@@ -77,10 +117,8 @@ def get_ce(assist, new_assist, jiaocai):
     # 基础册，上册
     basic_ces = assist.get_relate_ce()
 
-    if LIMIT_VERSIONS.get(jiaocai.v_id, 0) == 30 and jiaocai.grade == 2:  # 新版教材二年级只要上册
-        basic_ces = [c for c in basic_ces if c.order_num == 1]
-    if LIMIT_VERSIONS.get(jiaocai.v_id, 0) == 15 and jiaocai.grade == 2:  # 旧版教材二年级只要下册
-        basic_ces = [c for c in basic_ces if c.order_num == 2]
+    # 限定为上册，order_num==1
+    basic_ces = [c for c in basic_ces if c.order_num == 1]
 
     for basic_ce in basic_ces:
         new_ce = SectionCe(
@@ -131,7 +169,17 @@ def get_danyuan(ce, new_ce):
             m.insert_new_section()
             log.info('Insert new 关卡id:{},name:{}'.format(m.id, m.name))
             m.insert_relate_section_question()
-            print m
+            print 'Insert new 关卡id:{},name:{}'.format(m.id, m.name)
+
+
+def filter_course(course_name):
+    """筛掉语文园地类课程"""
+    for word in ChineseGardenFilter:
+        pattern = '.*{}.*'.format(word)
+        m = re.match(pattern, course_name)
+        if m:
+            # 有包含筛选关键字的课程
+            return 'drop'
 
 
 class MissionGroupGenerator(object):
@@ -148,6 +196,9 @@ class MissionGroupGenerator(object):
             log.info('=' * 30)
             log.info('课程《%s》,id:%s' % (c.name, c.id))
             log.info('=' * 30)
+            if filter_course(c.name) == 'drop':
+                log.warning('课程:{}，为语文园地类课程，被筛掉'.format(c.name))
+                continue
             self.get_practice(c)
 
     def get_practice(self, course):
@@ -315,4 +366,6 @@ class QuestionsExtractor(object):
 
 
 if __name__ == '__main__':
+    log.info('开始')
     get_all_versions()
+    log.info('结束')

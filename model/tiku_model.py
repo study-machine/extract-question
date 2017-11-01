@@ -1,7 +1,7 @@
 # coding=utf8
-from utils import *
-from model.base_model import *
 from model.base_field import *
+from model.base_model import *
+from random_questions.utils import *
 
 
 class CourseSectionBase(BaseModel):
@@ -83,6 +83,28 @@ class CourseSectionBase(BaseModel):
             ) for d in res
         ]
 
+    @classmethod
+    def get_by_assist_type_parent_order(cls, a_id, q_type, p_id, order):
+        sql = """
+        SELECT CourseSectionID,SectionName,Summary,sLevel,ParentID,OrderNum,JiaoCaiID,
+        SectionOrder,TeachingAssistID,Grade,Subject,QuestionType FROM wx_edu_coursesection
+        WHERE TeachingAssistID={a_id}
+        AND QuestionType={q_type}
+        AND ParentID={p_id}
+        AND OrderNum={order}
+        """.format(a_id=a_id, q_type=q_type, p_id=p_id, order=order)
+        res = cls.select(sql)
+        return [
+            cls(
+                id=int(d['CourseSectionID']),
+                name=uni_to_u8(d['SectionName']),
+                summary=uni_to_u8(d['Summary']),
+                parent_id=int(d['ParentID']),
+                order_num=int(d['OrderNum']),
+                assist_id=uni_to_u8(d['TeachingAssistID']),
+            ) for d in res
+        ]
+
 
 class JiaoCaiVersion(BaseModel):
     """教材版本"""
@@ -130,7 +152,8 @@ class JiaoCaiVersion(BaseModel):
             for d in res
         ]
         if not vs or len(vs) > 1:
-            raise MyLocalException('教材id或name输入错误')
+            log.error('没有找到对应id或name的版本')
+            return
         return vs[0]
 
 
@@ -195,6 +218,22 @@ class JiaocaiAssist(BaseModel):
         return [
             cls(
                 id=int(d['TeachingAssistID'])
+            ) for d in res
+        ]
+
+    @classmethod
+    def get_assist_by_jiaocai_and_type(cls, j_id, q_type):
+        """根据教材id和QuestionType获得教辅"""
+        sql = """
+        SELECT TeachingAssistID,JiaocaiID,Name FROM wx_edu_teachingassist
+        WHERE JiaocaiID={}
+        AND QuestionType={}
+        """.format(j_id, q_type)
+        res = cls.select(sql)
+        return [
+            cls(
+                id=int(d['TeachingAssistID']),
+                name=uni_to_u8(d['Name'])
             ) for d in res
         ]
 
@@ -282,6 +321,70 @@ class SectionRealCourse(CourseSectionBase):
         return self.get_childs_by_id(SectionPractice)
 
 
+class Misson(CourseSectionBase):
+    """
+    课程关卡，6道题为一关(组)
+    和api组确认关卡为一个CourseSection,level为3
+    """
+    level = 3
+
+    def __init__(self, **kwargs):
+        super(Misson, self).__init__(**kwargs)
+        self.set_misson_name()
+        self.questions = []
+
+    def set_misson_name(self):
+        """设置关卡名称"""
+        if self.order_num == 0:
+            raise MyLocalException('关卡order不能为0')
+        self.name = '第{}关'.format(self.order_num)
+
+    def insert_relate_section_question(self):
+        if not self.id:
+            raise MyLocalException('关卡没有id')
+        course_section_id = self.id
+        """将关卡id和questions的id写入关联表"""
+        for q in self.questions:
+            if not q:
+                raise MyLocalException('Question为空')
+            if not q.id:
+                raise MyLocalException('Question没有id')
+            fields = dict(
+                CourseSectionID=course_section_id,
+                QuestionID=q.id,
+                TeachingAssistID=self.assist_id
+            )
+            sql = """
+            INSERT INTO edu_relate_courseassistquestion (CourseSectionID,QuestionID,TeachingAssistID)
+            VALUES ({CourseSectionID},{QuestionID},{TeachingAssistID})
+            """.format(**fields)
+            self.id = self.insert(sql, auto_commit=False)
+            log.info('Insert new relate 关卡（{},{}）,题目（{},{}）'.format(course_section_id, self.name, q.id, q.body))
+        self.conn_read.commit()
+
+    @classmethod
+    def get_missions_by_ce(cls, a_id, q_type, p_id):
+        sql = """
+        SELECT CourseSectionID,SectionName,Summary,sLevel,ParentID,OrderNum,JiaoCaiID,
+        SectionOrder,TeachingAssistID,Grade,Subject,QuestionType FROM wx_edu_coursesection
+        WHERE TeachingAssistID={a_id}
+        AND QuestionType={q_type}
+        AND ParentID={p_id}
+        AND slevel=3
+        """.format(a_id=a_id, q_type=q_type, p_id=p_id)
+        res = cls.select(sql)
+        return [
+            cls(
+                id=int(d['CourseSectionID']),
+                name=uni_to_u8(d['SectionName']),
+                summary=uni_to_u8(d['Summary']),
+                parent_id=int(d['ParentID']),
+                order_num=int(d['OrderNum']),
+                assist_id=uni_to_u8(d['TeachingAssistID']),
+            ) for d in res
+        ]
+
+
 class SectionPractice(CourseSectionBase):
     """练习Section节点"""
 
@@ -326,11 +429,10 @@ class CategoryItem(BaseModel):
 
 
 class Question(BaseModel):
-    """题目"""
-
+    """抽的语文题目，比较特殊，有时间整合一下"""
     id = 0
     body = ''
-    q_type = ''
+    q_type = ''  # 这个q_type不是字段QuestionType
 
     def __eq__(self, other):
         if isinstance(other, Question):
@@ -340,8 +442,7 @@ class Question(BaseModel):
         return hash(self.id)
 
     def __repr__(self):
-        # return '<id:{},body:{},q_type:{}>'.format(self.id, self.body, self.q_type)
-        return '<id:{},q_type:{}>'.format(self.id, self.q_type)
+        return '<id:{},body:{},q_type:{}>'.format(self.id, self.body, self.q_type)
 
     @classmethod
     def get_question_by_item(cls, i_id):
@@ -349,14 +450,12 @@ class Question(BaseModel):
         根据CourseSection找到关联的CategoryItem
         本次要求填空题,Question表的QuestionType=1
         """
-        # sql还需要优化
         sql = """
         SELECT DISTINCT q.QuestionID,q.Question,relate2.CategoryItemID
         FROM edu_relate_questioncategory AS relate
         INNER JOIN wx_edu_questions_new AS q 
         ON q.QuestionID = relate.QuestionID
-        AND relate.CategoryItemID = {}
-        AND q.QuestionType=1
+        AND relate.CategoryItemID = {} AND q.QuestionType=1 AND relate.CategoryID=1
         INNER JOIN edu_relate_questioncategory as relate2 
         ON q.QuestionID = relate2.QuestionID
         AND relate2.CategoryID=2
@@ -366,49 +465,85 @@ class Question(BaseModel):
             cls(
                 id=int(d['QuestionID']),
                 body=uni_to_u8(d['Question']),
-                q_type=get_question_type(d['CategoryItemID']),
+                q_type=get_question_type(d['CategoryItemID']),  # 字音、字形、字义等
             )
             for d in res
         ]
 
 
-class Misson(CourseSectionBase):
-    """
-    课程关卡，6道题为一关(组)
-    和api组确认关卡为一个CourseSection,level为3
-    """
-    level = 3
+class QuestionRadio(BaseModel):
+    """语文园地单选题"""
+    id = 0  # QuestionID
+    body = ''  # Question
+    q_type = 1  # QuestionType 1为单选，语文园地都是单选
+    right_answer = ''  # RightAnswer
+    answer_explain = ''  # AnswerExplain 可自定义的字段
+    options = 'ABC'  # Options 语文园地默认都是ABC三选项
+    question_analyze = ''  # QuestionAnalyze 可自定义的字段
+    subject = 1  # 语文默认1
+    status = 0  # 默认0
 
-    def __init__(self, **kwargs):
-        super(Misson, self).__init__(**kwargs)
-        self.set_misson_name()
-        self.questions = []
+    def __repr__(self):
+        return '<id:{},body:{},right:{}>'.format(self.id, self.body, self.right_answer)
 
-    def set_misson_name(self):
-        """设置关卡名称"""
-        if self.order_num == 0:
-            raise MyLocalException('关卡order不能为0')
-        self.name = '第{}关'.format(self.order_num)
+    def insert_new_question(self):
+        fields = dict(
+            Question=self.body,
+            QuestionType=self.q_type,
+            RightAnswer=self.right_answer,
+            AnswerExplain=self.answer_explain,
+            Options=self.options,
+            QuestionAnalyze=self.question_analyze,
+            Grade=0,  # question的grade都是0
+            Subject=self.subject,
+            Status=0,
+        )
+        sql = """
+        INSERT INTO wx_edu_questions_new (Question,QuestionAnalyze,QuestionType,RightAnswer,
+        Status,Subject,AnswerExplain,Grade,Options) 
+        VALUES ('{Question}','{QuestionAnalyze}',{QuestionType},'{RightAnswer}',
+        {Status},{Subject},'{AnswerExplain}',{Grade},'{Options}');
+        """.format(**fields)
+        self.id = self.insert(sql)
 
-    def insert_relate_section_question(self):
+    def insert_relate_with_mission(self, section_id, a_id):
+        """增补题将关卡id和questions的id写入关联表"""
         if not self.id:
-            raise MyLocalException('关卡没有id')
-        course_section_id = self.id
-        """将关卡id和questions的id写入关联表"""
-        for q in self.questions:
-            if not q:
-                raise MyLocalException('Question为空')
-            if not q.id:
-                raise MyLocalException('Question没有id')
-            fields = dict(
-                CourseSectionID=course_section_id,
-                QuestionID=q.id,
-                TeachingAssistID=self.assist_id
-            )
-            sql = """
-            INSERT INTO edu_relate_courseassistquestion (CourseSectionID,QuestionID,TeachingAssistID)
-            VALUES ({CourseSectionID},{QuestionID},{TeachingAssistID})
-            """.format(**fields)
-            self.id = self.insert(sql, auto_commit=False)
-            log.info('Insert new relate 关卡（{},{}）,题目（{},{}）'.format(course_section_id, self.name, q.id, q.body))
-        self.conn_read.commit()
+            raise MyLocalException('question没有id')
+
+        fields = dict(
+            CourseSectionID=section_id,
+            QuestionID=self.id,
+            TeachingAssistID=a_id
+        )
+        sql = """
+        INSERT INTO edu_relate_courseassistquestion (CourseSectionID,QuestionID,TeachingAssistID)
+        VALUES ({CourseSectionID},{QuestionID},{TeachingAssistID})
+        """.format(**fields)
+        self.id = self.insert(sql)
+        log.info('Insert new relate 关卡:{},题目:{}'.format(section_id, self.id))
+
+
+class QuestionItem(BaseModel):
+    """语文园地题目选项"""
+    id = 0  # QuestionItemID
+    content = ''  # QuestionItem
+    item_code = ''  # ItemCode 选项的字母 A,B,C
+    q_id = ''  # QuestionID
+    is_right = ''  # IsRight 是否正确 Y 或者 N的字符
+
+    def __repr__(self):
+        return '<id:{},code:{},content:{},q_id:{}>'.format(self.id, self.item_code, self.content, self.q_id)
+
+    def insert_new_item(self):
+        fields = dict(
+            QuestionItem=self.content,
+            ItemCode=self.item_code,
+            QuestionID=self.q_id,
+            IsRight=self.is_right,
+        )
+        sql = """
+        INSERT INTO wx_edu_questionitem_new (QuestionItem,ItemCode,QuestionID,IsRight) 
+        VALUES ('{QuestionItem}','{ItemCode}',{QuestionID},'{IsRight}');
+        """.format(**fields)
+        self.id = self.insert(sql)

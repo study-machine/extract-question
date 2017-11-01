@@ -1,7 +1,5 @@
 # coding=utf-8
-import pymysql
-from config import *
-from utils import MyLocalException
+from random_questions.config import *
 
 
 class BaseModel(object):
