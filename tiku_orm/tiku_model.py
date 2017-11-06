@@ -587,7 +587,7 @@ class Question(BaseModel):
         FROM edu_relate_questioncategory AS relate
         INNER JOIN wx_edu_questions_new AS q 
         ON q.QuestionID = relate.QuestionID
-        AND relate.CategoryItemID = 2462 AND q.QuestionType=1 AND q.Status=0 AND relate.CategoryID=1 
+        AND relate.CategoryItemID = {} AND q.QuestionType=1 AND q.Status=0 AND relate.CategoryID=1 
         INNER JOIN edu_relate_questioncategory as relate2 
         ON q.QuestionID = relate2.QuestionID
         AND relate2.CategoryID=2
