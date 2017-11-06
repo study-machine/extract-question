@@ -24,7 +24,6 @@ class CourseSectionBase(BaseModel):
 
     def __init__(self, **kwargs):
         super(CourseSectionBase, self).__init__(**kwargs)
-        self.section_order = 0
 
     def __repr__(self):
         return '<id:{},name:{},summary:{},order:{}>'.format(self.id, self.name, self.summary, self.order_num)
