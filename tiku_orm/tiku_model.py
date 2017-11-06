@@ -11,6 +11,7 @@ class CourseSectionBase(BaseModel):
     level = 0  # level
     parent_id = 0
     order_num = 0  # 顺序
+    section_order = 0  # 综合顺序
     jiaocai_id = 0  # 教材_id
     assist_id = 0  # 教辅id
     grade = 0
@@ -124,6 +125,7 @@ class CourseSectionBase(BaseModel):
                 parent_id=int(d['parent_id']),
                 order_num=int(d['order_num']),
                 assist_id=uni_to_u8(d['assist_id']),
+                section_order=int(d['section_order'])
             ) for d in res
         ]
 
@@ -513,8 +515,6 @@ class Misson(CourseSectionBase):
                 assist_id=uni_to_u8(d['assist_id']),
             ) for d in res
         ]
-
-
 
 
 class SectionPractice(CourseSectionBase):
