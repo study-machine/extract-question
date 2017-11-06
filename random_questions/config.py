@@ -8,7 +8,7 @@ class DatabaseConfig(object):
         'user': 'root',
         'port': 3306,
         'password': 'asd123',
-        'db': 'tiku-dev',
+        'db': 'tiku2',
         'charset': 'utf8mb4',
         'cursorclass': pymysql.cursors.DictCursor,
     }
@@ -43,16 +43,41 @@ class DatabaseConfig(object):
         'charset': 'utf8mb4',
         'cursorclass': pymysql.cursors.DictCursor,
     }
+    # 速算题库总库线上库
+    online_susuan_db = {
+        'host': '10.19.141.31',
+        'user': 'wangxy',
+        'port': 3306,
+        'password': 'wangxy112',
+        'db': 'knowboxstore',
+        'charset': 'utf8mb4',
+        'cursorclass': pymysql.cursors.DictCursor,
+    }
+    # 线上从库
+    online_slave_db = {
+        'host': '10.215.48.111',
+        'user': 'liyj',
+        'port': 3306,
+        'password': 'liyj123',
+        'db': 'tiku',
+        'charset': 'utf8mb4',
+        'cursorclass': pymysql.cursors.DictCursor,
+    }
 
 
 # db_config_read = DatabaseConfig.dev_db
 # db_config_write = DatabaseConfig.dev_db
-
 # db_config_read = DatabaseConfig.local_db
 # db_config_write = DatabaseConfig.local_db
+# db_config_read = DatabaseConfig.dev_susuan_db
+# db_config_write = DatabaseConfig.dev_susuan_db
+# db_config_read = DatabaseConfig.QA_db
+# db_config_write = DatabaseConfig.QA_db
 
-db_config_read = DatabaseConfig.QA_db
-db_config_write = DatabaseConfig.QA_db
+db_config_read = DatabaseConfig.online_slave_db
+db_config_write = DatabaseConfig.dev_susuan_db
+
+
 
 
 class DevDB(object):

@@ -15,6 +15,7 @@ class CourseSectionBase(BaseModel):
     assist_id = 0  # 教辅id
     grade = 0
     subject = 1  # 学科先固定1
+    last = 0
     qt = 24  # CourseSection.QuestionType是api约定的🈯️值，同步练是24
 
     # 父节点实例
@@ -29,26 +30,48 @@ class CourseSectionBase(BaseModel):
 
     def insert_new_section(self):
         self.section_order = self._cal_section_order()
-        fields = dict(
-            SectionName=self.name,
-            Summary=self.summary,
-            sLevel=self.level,
-            ParentID=self.parent_id,
-            OrderNum=self.order_num,
-            JiaoCaiID=self.jiaocai_id,
-            SectionOrder=self.section_order,
-            TeachingAssistID=self.assist_id,
-            Grade=self.grade,
-            Subject=self.subject,
-            QuestionType=self.qt,
-            AddTime=get_datetime_str()
-        )
-        sql = """
-        INSERT INTO wx_edu_coursesection (SectionName,Summary,sLevel,ParentID,
-        OrderNum,JiaoCaiID,SectionOrder,TeachingAssistID,Grade,Subject,QuestionType,AddTime)
-        VALUES('{SectionName}','{Summary}',{sLevel},{ParentID},
-        {OrderNum},{JiaoCaiID},{SectionOrder},{TeachingAssistID},{Grade},{Subject},{QuestionType},'{AddTime}')
-        """.format(**fields)
+
+        if self.write_db_type == 'zongku':
+            # 总库表名和字段
+            fields = dict(
+                name=self.name,
+                summary=self.summary,
+                level=self.level,
+                parent_id=self.parent_id,
+                order_num=self.order_num,
+                section_order=self.section_order,
+                assist_id=self.assist_id,
+                last=self.last,
+                online_status=1,  # 同步线上库为1
+                status=0  # 未删除为0
+            )
+            sql = """
+            INSERT INTO base_course_section (name,summary,level,parent_id,
+            order_num,section_order,assist_id,last,online_status,status)
+            VALUES('{name}','{summary}',{level},{parent_id},
+            {order_num},{section_order},{assist_id},{last},{online_status},{status})
+            """.format(**fields)
+        else:
+            fields = dict(
+                SectionName=self.name,
+                Summary=self.summary,
+                sLevel=self.level,
+                ParentID=self.parent_id,
+                OrderNum=self.order_num,
+                JiaoCaiID=self.jiaocai_id,
+                SectionOrder=self.section_order,
+                TeachingAssistID=self.assist_id,
+                Grade=self.grade,
+                Subject=self.subject,
+                QuestionType=self.qt,
+                AddTime=get_datetime_str()
+            )
+            sql = """
+            INSERT INTO wx_edu_coursesection (SectionName,Summary,sLevel,ParentID,
+            OrderNum,JiaoCaiID,SectionOrder,TeachingAssistID,Grade,Subject,QuestionType,AddTime)
+            VALUES('{SectionName}','{Summary}',{sLevel},{ParentID},
+            {OrderNum},{JiaoCaiID},{SectionOrder},{TeachingAssistID},{Grade},{Subject},{QuestionType},'{AddTime}')
+            """.format(**fields)
         self.id = self.insert(sql)
 
     def _cal_section_order(self):
@@ -84,24 +107,23 @@ class CourseSectionBase(BaseModel):
         ]
 
     @classmethod
-    def get_by_assist_type_parent_order(cls, a_id, q_type, p_id, order):
+    def get_by_assist_type_parent_order_from_zongku(cls, a_id, q_type, p_id, order):
         sql = """
-        SELECT CourseSectionID,SectionName,Summary,sLevel,ParentID,OrderNum,JiaoCaiID,
-        SectionOrder,TeachingAssistID,Grade,Subject,QuestionType FROM wx_edu_coursesection
-        WHERE TeachingAssistID={a_id}
-        AND QuestionType={q_type}
-        AND ParentID={p_id}
-        AND OrderNum={order}
+        SELECT section_id,name,summary,level,parent_id,order_num,
+        section_order,assist_id FROM base_course_section
+        WHERE assist_id={a_id}
+        AND parent_id={p_id}
+        AND order_num={order}
         """.format(a_id=a_id, q_type=q_type, p_id=p_id, order=order)
         res = cls.select(sql)
         return [
             cls(
-                id=int(d['CourseSectionID']),
-                name=uni_to_u8(d['SectionName']),
-                summary=uni_to_u8(d['Summary']),
-                parent_id=int(d['ParentID']),
-                order_num=int(d['OrderNum']),
-                assist_id=uni_to_u8(d['TeachingAssistID']),
+                id=int(d['section_id']),
+                name=uni_to_u8(d['name']),
+                summary=uni_to_u8(d['summary']),
+                parent_id=int(d['parent_id']),
+                order_num=int(d['order_num']),
+                assist_id=uni_to_u8(d['assist_id']),
             ) for d in res
         ]
 
@@ -141,13 +163,32 @@ class JiaoCaiVersion(BaseModel):
     def get_version(cls, id=0, name='QQQ'):
         sql = """
         SELECT TeachingID,Name FROM wx_edu_teachingmaterial
-        WHERE TeachingID={} or NAME='{}';
+        WHERE TeachingID={} or Name='{}';
         """.format(id, name)
         res = cls.select(sql)
         vs = [
             cls(
                 id=int(d['TeachingID']),
                 name=uni_to_u8(d['Name'])
+            )
+            for d in res
+        ]
+        if not vs or len(vs) > 1:
+            log.error('没有找到对应id或name的版本')
+            return
+        return vs[0]
+
+    @classmethod
+    def get_version_from_zongku(cls, id=0, name='QQQ'):
+        sql = """
+        SELECT edition_id,name FROM base_edition
+        WHERE edition_id={} or name='{}';
+        """.format(id, name)
+        res = cls.select(sql)
+        vs = [
+            cls(
+                id=int(d['edition_id']),
+                name=uni_to_u8(d['name'])
             )
             for d in res
         ]
@@ -185,6 +226,24 @@ class JiaoCai(BaseModel):
                 id=int(d['JiaoCaiID']),
                 name=uni_to_u8(d['Name']),
                 grade=int(d['Grade']),
+                v_id=v_id,
+            ) for d in res
+        ]
+
+    @classmethod
+    def get_jiaocai_by_version_from_zongku(cls, v_id):
+        """获取一个出版社的教材，默认语文"""
+        # IsActive 为可用教材
+        sql = """
+        SELECT book_id,name,grade,subject FROM base_book 
+        where is_active=1 and edition_id={} and subject=1;
+        """.format(v_id)
+        res = cls.select(sql)
+        return [
+            cls(
+                id=int(d['book_id']),
+                name=uni_to_u8(d['name']),
+                grade=int(d['grade']),
                 v_id=v_id,
             ) for d in res
         ]
@@ -237,22 +296,56 @@ class JiaocaiAssist(BaseModel):
             ) for d in res
         ]
 
+    @classmethod
+    def get_assist_by_jiaocai_and_type_from_zongku(cls, j_id, q_type):
+        """根据教材id和QuestionType获得教辅"""
+        sql = """
+        SELECT assist_id,book_id,name FROM base_assist
+        WHERE book_id={}
+        AND type={}
+        """.format(j_id, q_type)
+        res = cls.select(sql)
+        return [
+            cls(
+                id=int(d['assist_id']),
+                name=uni_to_u8(d['name'])
+            ) for d in res
+        ]
+
     def insert_new_assist(self):
         """将教辅数据写入数据库"""
-        fields = dict(
-            Name=self.name,
-            Summary=self.summary,
-            HasSection=1,
-            JiaocaiID=self.jiaocai_id,
-            QuestionType=120,  # 语文同步练固定要求120
-            OrderNum=self.orderNum,
-            Grade=self.grade,
-            Subject=self.subject,
-        )
-        sql = """
-        INSERT INTO wx_edu_teachingassist (Name,Summary,HasSection,JiaocaiID,QuestionType,OrderNum,Grade,Subject)
-        VALUES ('{Name}','{Summary}',{HasSection},{JiaocaiID},{QuestionType},{OrderNum},{Grade},{Subject})
-        """.format(**fields)
+        if self.write_db_type == 'zongku':
+            # 总库表名和字段
+            fields = dict(
+                name=self.name,
+                summary=self.summary,
+                book_id=self.jiaocai_id,
+                type=120,  # 语文同步练固定要求120
+                order_num=self.orderNum,
+                status=0,
+                online_status=1,
+            )
+            sql = """
+            INSERT INTO base_assist (name,summary,book_id,type,order_num,
+            status,online_status)
+            VALUES ('{name}','{summary}',{book_id},{type},{order_num},
+            {status},{online_status})
+            """.format(**fields)
+        else:
+            fields = dict(
+                Name=self.name,
+                Summary=self.summary,
+                HasSection=1,
+                JiaocaiID=self.jiaocai_id,
+                QuestionType=120,  # 语文同步练固定要求120
+                OrderNum=self.orderNum,
+                Grade=self.grade,
+                Subject=self.subject,
+            )
+            sql = """
+            INSERT INTO wx_edu_teachingassist (Name,Summary,HasSection,JiaocaiID,QuestionType,OrderNum,Grade,Subject)
+            VALUES ('{Name}','{Summary}',{HasSection},{JiaocaiID},{QuestionType},{OrderNum},{Grade},{Subject})
+            """.format(**fields)
         self.id = self.insert(sql)
 
     def get_relate_ce(self):
@@ -327,6 +420,7 @@ class Misson(CourseSectionBase):
     和api组确认关卡为一个CourseSection,level为3
     """
     level = 3
+    last = 1
 
     def __init__(self, **kwargs):
         super(Misson, self).__init__(**kwargs)
@@ -349,15 +443,30 @@ class Misson(CourseSectionBase):
                 raise MyLocalException('Question为空')
             if not q.id:
                 raise MyLocalException('Question没有id')
-            fields = dict(
-                CourseSectionID=course_section_id,
-                QuestionID=q.id,
-                TeachingAssistID=self.assist_id
-            )
-            sql = """
-            INSERT INTO edu_relate_courseassistquestion (CourseSectionID,QuestionID,TeachingAssistID)
-            VALUES ({CourseSectionID},{QuestionID},{TeachingAssistID})
-            """.format(**fields)
+
+            if self.write_db_type == 'zongku':
+                # 总库表名和字段
+                fields = dict(
+                    section_id=self.id,
+                    question_id=q.id,
+                    assist_id=self.assist_id,
+                    status=0,
+                    online_status=1
+                )
+                sql = """
+                INSERT INTO relate_section_question (section_id,question_id,assist_id,status,online_status)
+                VALUES ({section_id},{question_id},{assist_id},{status},{online_status})
+                """.format(**fields)
+            else:
+                fields = dict(
+                    CourseSectionID=self.id,
+                    QuestionID=q.id,
+                    TeachingAssistID=self.assist_id
+                )
+                sql = """
+                INSERT INTO edu_relate_courseassistquestion (CourseSectionID,QuestionID,TeachingAssistID)
+                VALUES ({CourseSectionID},{QuestionID},{TeachingAssistID})
+                """.format(**fields)
             self.insert(sql, auto_commit=False)
             log.info('Insert new relate 关卡（{},{}）,题目（{},{}）'.format(course_section_id, self.name, q.id, q.body))
         self.conn_read.commit()
@@ -383,6 +492,29 @@ class Misson(CourseSectionBase):
                 assist_id=uni_to_u8(d['TeachingAssistID']),
             ) for d in res
         ]
+
+    @classmethod
+    def get_missions_by_ce_from_zongku(cls, a_id, q_type, p_id):
+        sql = """
+        SELECT section_id,name,summary,level,parent_id,order_num,
+        section_order,assist_id FROM base_course_section
+        WHERE assist_id={a_id}
+        AND parent_id={p_id}
+        AND level=3
+        """.format(a_id=a_id, q_type=q_type, p_id=p_id)
+        res = cls.select(sql)
+        return [
+            cls(
+                id=int(d['section_id']),
+                name=uni_to_u8(d['name']),
+                summary=uni_to_u8(d['summary']),
+                parent_id=int(d['parent_id']),
+                order_num=int(d['order_num']),
+                assist_id=uni_to_u8(d['assist_id']),
+            ) for d in res
+        ]
+
+
 
 
 class SectionPractice(CourseSectionBase):
@@ -455,7 +587,7 @@ class Question(BaseModel):
         FROM edu_relate_questioncategory AS relate
         INNER JOIN wx_edu_questions_new AS q 
         ON q.QuestionID = relate.QuestionID
-        AND relate.CategoryItemID = {} AND q.QuestionType=1 AND relate.CategoryID=1
+        AND relate.CategoryItemID = 2462 AND q.QuestionType=1 AND q.Status=0 AND relate.CategoryID=1 
         INNER JOIN edu_relate_questioncategory as relate2 
         ON q.QuestionID = relate2.QuestionID
         AND relate2.CategoryID=2
@@ -487,23 +619,43 @@ class QuestionRadio(BaseModel):
         return '<id:{},body:{},right:{}>'.format(self.id, self.body, self.right_answer)
 
     def insert_new_question(self):
-        fields = dict(
-            Question=self.body,
-            QuestionType=self.q_type,
-            RightAnswer=self.right_answer,
-            AnswerExplain=self.answer_explain,
-            Options=self.options,
-            QuestionAnalyze=self.question_analyze,
-            Grade=0,  # question的grade都是0
-            Subject=self.subject,
-            Status=0,
-        )
-        sql = """
-        INSERT INTO wx_edu_questions_new (Question,QuestionAnalyze,QuestionType,RightAnswer,
-        Status,Subject,AnswerExplain,Grade,Options) 
-        VALUES ('{Question}','{QuestionAnalyze}',{QuestionType},'{RightAnswer}',
-        {Status},{Subject},'{AnswerExplain}',{Grade},'{Options}');
-        """.format(**fields)
+        if self.write_db_type == 'zongku':
+            # 总库表名和字段
+            fields = dict(
+                question=self.body,
+                analyse=self.question_analyze,
+                show_type=self.q_type,
+                right_answer=self.right_answer,
+                answer_explain=self.answer_explain,
+                option_count=3,
+                subject=1,
+                status=0,
+                online_status=1
+            )
+            sql = """
+            INSERT INTO base_question (question,analyse,show_type,right_answer,
+            subject,answer_explain,option_count,status,online_status) 
+            VALUES ('{question}','{analyse}',{show_type},'{right_answer}',
+            {subject},'{answer_explain}',{option_count},{status},{online_status});
+            """.format(**fields)
+        else:
+            fields = dict(
+                Question=self.body,
+                QuestionType=self.q_type,
+                RightAnswer=self.right_answer,
+                AnswerExplain=self.answer_explain,
+                Options=self.options,
+                QuestionAnalyze=self.question_analyze,
+                Grade=0,  # question的grade都是0
+                Subject=self.subject,
+                Status=0,
+            )
+            sql = """
+            INSERT INTO wx_edu_questions_new (Question,QuestionAnalyze,QuestionType,RightAnswer,
+            Status,Subject,AnswerExplain,Grade,Options) 
+            VALUES ('{Question}','{QuestionAnalyze}',{QuestionType},'{RightAnswer}',
+            {Status},{Subject},'{AnswerExplain}',{Grade},'{Options}');
+            """.format(**fields)
         self.id = self.insert(sql)
 
     def insert_relate_with_mission(self, section_id, a_id):
@@ -511,15 +663,29 @@ class QuestionRadio(BaseModel):
         if not self.id:
             raise MyLocalException('question没有id')
 
-        fields = dict(
-            CourseSectionID=section_id,
-            QuestionID=self.id,
-            TeachingAssistID=a_id
-        )
-        sql = """
-        INSERT INTO edu_relate_courseassistquestion (CourseSectionID,QuestionID,TeachingAssistID)
-        VALUES ({CourseSectionID},{QuestionID},{TeachingAssistID})
-        """.format(**fields)
+        if self.write_db_type == 'zongku':
+            # 总库表名和字段
+            fields = dict(
+                section_id=section_id,
+                question_id=self.id,
+                assist_id=a_id,
+                status=0,
+                online_status=1
+            )
+            sql = """
+            INSERT INTO relate_section_question (section_id,question_id,assist_id,status,online_status)
+            VALUES ({section_id},{question_id},{assist_id},{status},{online_status})
+            """.format(**fields)
+        else:
+            fields = dict(
+                CourseSectionID=section_id,
+                QuestionID=self.id,
+                TeachingAssistID=a_id
+            )
+            sql = """
+            INSERT INTO edu_relate_courseassistquestion (CourseSectionID,QuestionID,TeachingAssistID)
+            VALUES ({CourseSectionID},{QuestionID},{TeachingAssistID})
+            """.format(**fields)
         self.insert(sql)
         log.info('Insert new relate 关卡:{},题目:{}'.format(section_id, self.id))
 
@@ -536,14 +702,27 @@ class QuestionItem(BaseModel):
         return '<id:{},code:{},content:{},q_id:{}>'.format(self.id, self.item_code, self.content, self.q_id)
 
     def insert_new_item(self):
-        fields = dict(
-            QuestionItem=self.content,
-            ItemCode=self.item_code,
-            QuestionID=self.q_id,
-            IsRight=self.is_right,
-        )
-        sql = """
-        INSERT INTO wx_edu_questionitem_new (QuestionItem,ItemCode,QuestionID,IsRight) 
-        VALUES ('{QuestionItem}','{ItemCode}',{QuestionID},'{IsRight}');
-        """.format(**fields)
+        if self.write_db_type == 'zongku':
+            fields = dict(
+                question_item=self.content,
+                item_code=self.item_code,
+                question_id=self.q_id,
+                status=0,
+                online_status=1
+            )
+            sql = """
+            INSERT INTO base_question_item (question_item,item_code,question_id,status,online_status) 
+            VALUES ('{question_item}','{item_code}',{question_id},{status},{online_status});
+            """.format(**fields)
+        else:
+            fields = dict(
+                QuestionItem=self.content,
+                ItemCode=self.item_code,
+                QuestionID=self.q_id,
+                IsRight=self.is_right,
+            )
+            sql = """
+            INSERT INTO wx_edu_questionitem_new (QuestionItem,ItemCode,QuestionID,IsRight) 
+            VALUES ('{QuestionItem}','{ItemCode}',{QuestionID},'{IsRight}');
+            """.format(**fields)
         self.id = self.insert(sql)

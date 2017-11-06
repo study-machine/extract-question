@@ -124,12 +124,12 @@ class ParsedRawQuestion(object):
             item.insert_new_item()
 
     def get_version(self):
-        self.version = JiaoCaiVersion.get_version(name=self.raw_question['version_name'])
+        self.version = JiaoCaiVersion.get_version_from_zongku(name=self.raw_question['version_name'])
         if self.version:
             log.debug('获取到题目所属版本{}'.format(self.version))
 
     def get_jiaocai(self):
-        jiaocais = JiaoCai.get_jiaocai_by_version(self.version.id)
+        jiaocais = JiaoCai.get_jiaocai_by_version_from_zongku(self.version.id)
         jiaocais = [j for j in jiaocais if j.grade == self.grade]
         if check_no_or_too_many(jiaocais, '版本：{}的{}年级'.format(self.version.name, self.grade), '教材'):
             self.jiaocai = jiaocais[0]
@@ -137,13 +137,13 @@ class ParsedRawQuestion(object):
 
     def get_assist(self):
         # 120为语文同步练教辅
-        assists = JiaocaiAssist.get_assist_by_jiaocai_and_type(self.jiaocai.id, 120)
+        assists = JiaocaiAssist.get_assist_by_jiaocai_and_type_from_zongku(self.jiaocai.id, 120)
         if check_no_or_too_many(assists, '教材：{}'.format(self.jiaocai.name), '教辅'):
             self.assist = assists[0]
             log.debug('获取到题目所属教辅{}'.format(self.assist))
 
     def get_ce(self):
-        ces = CourseSectionBase.get_by_assist_type_parent_order(
+        ces = CourseSectionBase.get_by_assist_type_parent_order_from_zongku(
             a_id=self.assist.id,
             q_type=24,
             p_id=0,  # 册的ParentID为0
@@ -154,7 +154,7 @@ class ParsedRawQuestion(object):
             log.debug('获取到题目所属册{}'.format(self.ce))
 
     def get_danyuan(self):
-        danyuans = CourseSectionBase.get_by_assist_type_parent_order(
+        danyuans = CourseSectionBase.get_by_assist_type_parent_order_from_zongku(
             a_id=self.assist.id,
             q_type=24,
             p_id=self.ce.id,
@@ -168,7 +168,7 @@ class ParsedRawQuestion(object):
         """关卡的序号放在这里计算"""
         if not self.danyuan:
             raise MyLocalException('没有单元，没法计算序号')
-        missions = Misson.get_missions_by_ce(
+        missions = Misson.get_missions_by_ce_from_zongku(
             a_id=self.assist.id,
             q_type=24,
             p_id=self.danyuan.id
@@ -202,6 +202,7 @@ def start():
                 subject=1,
                 qt=24
             )
+            new_mission.parent_section = pq.danyuan
             new_mission.insert_new_section()
         pq.question.insert_relate_with_mission(section_id=new_mission.id, a_id=pq.assist.id)
         print 'insert relate for 题目:{},关卡{}'.format(pq.question.id, new_mission.id)

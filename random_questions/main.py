@@ -66,6 +66,12 @@ def get_all_versions():
         return
     log.info('处理的版本:{}'.format(versions))
 
+    # 人教新版（部编版）要放在前面
+    special_version = '人教新版（部编版）'
+    renjiaoxinban = [v for v in versions if v.name == special_version]
+    other = [v for v in versions if v.name != special_version]
+    versions = renjiaoxinban + other
+    
     for v in versions:
         log.info('开始获取版本：%s的教材' % v.name)
         get_jiaocais(v)
@@ -147,7 +153,7 @@ def get_danyuan(ce, new_ce):
 
         new_danyuan = SectionDanyuan(
             name='第{}单元'.format(i + 1),
-            summary='语文同步练',
+            summary='语文同步练关卡',
             parent_id=new_ce.id,
             parent_section=new_ce,
             order_num=i + 1,

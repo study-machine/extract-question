@@ -7,6 +7,8 @@ class BaseModel(object):
     conn_read = pymysql.connect(**db_config_read)
     # 写库的连接
     conn_write = pymysql.connect(**db_config_write)
+    # write_db_type = 'zongku'
+    write_db_type = ''
 
     def __init__(self, **kwargs):
         for k, v in kwargs.items():
