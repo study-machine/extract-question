@@ -39,7 +39,7 @@ class DatabaseConfig(object):
         'user': 'root',
         'port': 3306,
         'password': 'asd123',
-        'db': 'knowboxstore_susuan',
+        'db': 'knowboxstore4',
         'charset': 'utf8mb4',
         'cursorclass': pymysql.cursors.DictCursor,
     }
@@ -65,23 +65,8 @@ class DatabaseConfig(object):
     }
 
 
-# db_config_read = DatabaseConfig.dev_db
-# db_config_write = DatabaseConfig.dev_db
-# db_config_read = DatabaseConfig.local_db
-# db_config_write = DatabaseConfig.local_db
-# db_config_read = DatabaseConfig.dev_susuan_db
-# db_config_write = DatabaseConfig.dev_susuan_db
-# db_config_read = DatabaseConfig.QA_db
-# db_config_write = DatabaseConfig.QA_db
-
-# db_config_read = DatabaseConfig.online_slave_db
-# db_config_read = DatabaseConfig.online_susuan_db
-# db_config_write = DatabaseConfig.online_susuan_db
-
-db_config_read = DatabaseConfig.dev_susuan_db
+db_config_read = DatabaseConfig.online_slave_db
 db_config_write = DatabaseConfig.dev_susuan_db
-
-
 
 
 class DevDB(object):
