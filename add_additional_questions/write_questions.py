@@ -19,7 +19,7 @@ def raw_questions_generator():
     conn = pymysql.connect(**local_db)
     cursor = conn.cursor()
     sql = """
-    select * from raw_questions;
+    select * from raw_questions2;
     """
     cursor.execute(sql)
     for n in xrange(cursor.rowcount):
@@ -108,6 +108,7 @@ class ParsedRawQuestion(object):
             status=0
         )
         question_obj.insert_new_question()
+        log.info('Insert into 题目:{},{}'.format(question_obj.id, question_obj.body))
         if not question_obj.id:
             raise MyLocalException('question没有id')
         self.question = question_obj

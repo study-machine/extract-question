@@ -65,8 +65,8 @@ class DatabaseConfig(object):
     }
 
 
-db_config_read = DatabaseConfig.online_slave_db
-db_config_write = DatabaseConfig.dev_susuan_db
+db_config_read = DatabaseConfig.online_susuan_db
+db_config_write = DatabaseConfig.online_susuan_db
 
 
 class DevDB(object):

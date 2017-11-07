@@ -180,11 +180,11 @@ class JiaoCaiVersion(BaseModel):
         return vs[0]
 
     @classmethod
-    def get_version_from_zongku(cls, id=0, name='QQQ'):
+    def get_version_from_zongku(cls, name='QQQ'):
         sql = """
         SELECT edition_id,name FROM base_edition
-        WHERE edition_id={} or name='{}';
-        """.format(id, name)
+        WHERE name='{}' and online_status=2;
+        """.format(name)
         res = cls.select(sql)
         vs = [
             cls(
@@ -194,7 +194,7 @@ class JiaoCaiVersion(BaseModel):
             for d in res
         ]
         if not vs or len(vs) > 1:
-            log.error('没有找到对应id或name的版本')
+            log.error('没有找到对应id{}或name{}的版本'.format(id, name))
             return
         return vs[0]
 
